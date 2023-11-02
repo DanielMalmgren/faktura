@@ -1,3 +1,3 @@
-## Om kost
+## Om faktura
 
-En portal som används för kostbeställningar inom hemtjänsten i Åtvidabergs kommun
+En portal som används för att visa upp fakturaspecar
