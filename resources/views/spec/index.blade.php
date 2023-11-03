@@ -27,18 +27,18 @@
                     <div class="form-row">
                         <div class="col">
                             <label for="kund">Kund</label>
-                            <select class="custom-select d-block w-100" id="kund" name="kund" required="" onchange="updateSpec()">
+                            <select class="custom-select w-100" id="kund" name="kund" required="" onchange="updateSpec()">
                                 @if(!$valdkund)
                                     <option selected disabled>Välj kund</option>
                                 @endif
                                 @foreach($kunder as $kund)
-                                    <option {{$valdkund==$kund?'selected':''}} value="{{$kund}}">{{$kund}}</option>
+                                    <option {{$valdkund==$kund->debiteurennummer?'selected':''}} value="{{$kund->debiteurennummer}}">{{$kund->debiteurennummer}}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col" style="max-width:150px">
                             <label for="period">Period</label>
-                            <select class="custom-select d-block w-200" id="period" name="period" onchange="updateSpec()">
+                            <select class="custom-select w-100" id="period" name="period" onchange="updateSpec()">
                                 @foreach($perioder as $period)
                                     <option {{$valdperiod==$period?'selected':''}} value="{{$period}}">{{$period}}</option>
                                 @endforeach

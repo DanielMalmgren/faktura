@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\InvoicedAsset;
+use App\Models\TOPdeskCustomer;
+use DateTime;
 
 class SpecController extends Controller
 {
@@ -14,11 +16,20 @@ class SpecController extends Controller
 
     public function index(Request $request)
     {
-        $kunder = ['0512-7330', '0512-7340', '0512-6131', '0512-7200', '0512-4200', '0512-7320', '0512-6130', '0512-6120-2', '0512-6121'];
-        $perioder = ['2310', '2311'];
+        $user = session()->get('user');
+
+        $perioder = array();
+        
+        $startdatum = new DateTime('2023-01-01'); //TODO! Ändra till rätt månad sedan!
+        $slutdatum = new DateTime(date('Y-m-01'));
+
+        while ($startdatum <= $slutdatum) {
+            $perioder[] = $slutdatum->format('ym');
+            $slutdatum->modify('-1 month');
+        }
 
         $data = [
-            'kunder' => $kunder,
+            'kunder' => $user->customers,
             'perioder' => $perioder,
             'valdkund' => $request->kund,
             'valdperiod' => $request->period,

@@ -49,6 +49,6 @@ class Handler extends ExceptionHandler
         }
 
         $saml2Auth = new Saml2Auth(Saml2Auth::loadOneLoginAuthFromIpdConfig('idp.itsam.se'));
-        return $saml2Auth->login('/');
+        return $saml2Auth->login($request->fullUrl());
     }
 }
