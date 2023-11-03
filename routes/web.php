@@ -21,3 +21,6 @@ Route::get('logout',                    'HomeController@logout');
 
 Route::get('/spec',                     'SpecController@index');
 Route::get('/spec/listajax',            'SpecController@listajax');
+
+Route::get('/asset',                    'AssetController@index');
+Route::get('/asset/listajax',           'AssetController@listajax');
