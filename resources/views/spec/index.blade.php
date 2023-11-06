@@ -32,7 +32,7 @@
                                     <option selected disabled>Välj kund</option>
                                 @endif
                                 @foreach($kunder as $kund)
-                                    <option {{$valdkund==$kund->debiteurennummer?'selected':''}} value="{{$kund->debiteurennummer}}">{{$kund->debiteurennummer}}</option>
+                                    <option {{$valdkund==$kund->debiteurennummer?'selected':''}} value="{{$kund->debiteurennummer}}">{{$kund->naam}}</option>
                                 @endforeach
                             </select>
                         </div>

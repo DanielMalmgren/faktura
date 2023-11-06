@@ -29,7 +29,7 @@ class AssetController extends Controller
     {
         $kund = TOPdeskCustomer::where('unid', $request->kund)->first();
 
-        $assets = $kund->assets;
+        $assets = $kund->assets;//->where('raw_status', '4737db93-c702-4ea6-a9b4-5e28f917144d');
         
         $data = [
             'assets' => $assets,
