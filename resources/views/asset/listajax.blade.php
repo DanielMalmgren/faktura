@@ -72,7 +72,7 @@
         stateSave: true,
         dom: 'Bfrtip',
         buttons: [
-            'copy', 'excel', 'colvis'
+            'copy', 'excel', 'colvis', 'pageLength'
         ],
     });
 </script>

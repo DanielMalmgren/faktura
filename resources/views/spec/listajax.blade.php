@@ -38,7 +38,7 @@
         stateSave: true,
         dom: 'Bfrtip',
         buttons: [
-            'copy', 'excel', 'pdf', 'colvis'
+            'copy', 'excel', 'colvis', 'pageLength'
         ],
         columnDefs: [
             {

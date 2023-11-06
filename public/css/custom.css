@@ -4,25 +4,26 @@
     float: right;
 }
 
-/*.w-100 {
-    width: 100px;
+.btn-secondary {
+    color: #fff;
+    background-color: #366771;
+    border-color: #366771;
 }
 
-.btn-primary {
+.btn-secondary:hover {
     color: #fff;
-    background-color: #2d8b2d;
-    border-color: #2d8b2d;
+    background-color: #87bbc6;
+    border-color: #87bbc6;
 }
 
-.btn-primary:hover {
+.btn-secondary.disabled, .btn-secondary:disabled {
     color: #fff;
-    background-color: #2d8b2d;
-    border-color: #2d8b2d;
+    background-color: #4e5668;
+    border-color: #4e5668;
 }
 
-.btn-primary.disabled, .btn-primary:disabled {
+.page-item.active .page-link {
     color: #fff;
-    background-color: #2d8b2d;
-    border-color: #2d8b2d;
+    background-color: #366771;
+    border-color: #366771;
 }
-*/
