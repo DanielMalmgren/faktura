@@ -7,10 +7,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <a href="{{env("ORDER_BASEURL")}}/whatever">Beställ en ny liten dator</a><br>
-                <a href="{{env("ORDER_BASEURL")}}/whatever">Beställ en stor dator istället</a><br>
-                <a href="{{env("ORDER_BASEURL")}}/whatever">Beställ en atlantångare istället</a><br>
+            <div id="ordermodalcontent" class="modal-body">
+                Hämtar lista med möjliga utbyten...
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">@lang('Stäng')</button>
@@ -42,8 +40,12 @@
                 <td>{{$asset->leasingpris}}</td>
                 <td>{{substr($asset->utbytesdatum, 0, 10)}}</td>
                 <td>
-                    @if(((new DateTime())->add(new DateInterval('P3M'))) > (new DateTime($asset->utbytesdatum)))
-                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#order-replacement" data-assetname="{{$asset->name}}">
+                    @if(((new DateTime())->add(new DateInterval('P2W'))) > (new DateTime($asset->utbytesdatum)))
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#order-replacement" data-assetname="{{$asset->name}}" data-user="{{$asset->person()?$asset->person()->tasloginnaam:""}}" data-article="{{$asset->artikelnummer}}">
+                            Beställ
+                        </button>
+                    @elseif(((new DateTime())->add(new DateInterval('P3M'))) > (new DateTime($asset->utbytesdatum)))
+                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#order-replacement" data-assetname="{{$asset->name}}" data-user="{{$asset->person()?$asset->person()->tasloginnaam:""}}" data-article="{{$asset->artikelnummer}}">
                             Beställ
                         </button>
                     @endif
@@ -58,11 +60,13 @@
     $('#order-replacement').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var assetname = button.data('assetname') // Extract info from data-* attributes
-        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var artikelnummer = button.data('article') // Extract info from data-* attributes
+        var user = button.data('user') // Extract info from data-* attributes
+
         var modal = $(this)
         modal.find('.modal-title').text('Välj utbyte för ' + assetname)
-        //modal.find('.modal-body input').val(recipient)
+        $("#ordermodalcontent").text("Hämtar lista med möjliga utbyten...")
+        $("#ordermodalcontent").load("/asset/ordermodal?kund={{$kund}}&artikelnummer=" + artikelnummer + "&user=" + user);
     })
 
     new DataTable('#assettable', {

@@ -24,3 +24,4 @@ Route::get('/spec/listajax',            'SpecController@listajax');
 
 Route::get('/asset',                    'AssetController@index');
 Route::get('/asset/listajax',           'AssetController@listajax');
+Route::get('/asset/ordermodal',         'AssetController@ordermodal');
