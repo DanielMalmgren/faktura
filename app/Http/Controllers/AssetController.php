@@ -42,7 +42,17 @@ class AssetController extends Controller
 
     public function ordermodal(Request $request)
     {
-        $articlename = 'Leasing '.$request->artikelnummer;
+        if(strpos($request->artikelnummer, "+")) {
+            $aarray = explode("+", $request->artikelnummer);
+            $artikelnummer = $aarray[0];
+            $tillval = $aarray[1];
+            $antaltillval = count($aarray)-1;
+        } else {
+            $artikelnummer = $request->artikelnummer;
+            $tillval = null;
+            $antaltillval = 0;
+        }
+        $articlename = 'Leasing '.$artikelnummer;
 
         $relatedArticles = TOPdeskArticle::where('naam', $articlename)->with('relatedArticles')->first();
         if($relatedArticles) {
@@ -52,10 +62,13 @@ class AssetController extends Controller
         }
 
         $data = [
-            'currentarticle' => $request->artikelnummer,
+            'currentarticle' => $artikelnummer,
             'articles' => $articles,
             'kund' => $request->kund,
             'user' => $request->user,
+            'oldasset' => $request->oldasset,
+            'tillval' => $tillval,
+            'antaltillval' => $antaltillval,
         ];
 
         return view('asset.ordermodal')->with($data);

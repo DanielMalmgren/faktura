@@ -60,13 +60,13 @@
     $('#order-replacement').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var assetname = button.data('assetname') // Extract info from data-* attributes
-        var artikelnummer = button.data('article') // Extract info from data-* attributes
+        var artikelnummer = encodeURIComponent(button.data('article')) // Extract info from data-* attributes
         var user = button.data('user') // Extract info from data-* attributes
 
         var modal = $(this)
         modal.find('.modal-title').text('Välj utbyte för ' + assetname)
         $("#ordermodalcontent").text("Hämtar lista med möjliga utbyten...")
-        $("#ordermodalcontent").load("/asset/ordermodal?kund={{$kund}}&artikelnummer=" + artikelnummer + "&user=" + user);
+        $("#ordermodalcontent").load("/asset/ordermodal?kund={{$kund}}&artikelnummer=" + artikelnummer + "&user=" + user + "&oldasset=" + assetname);
     })
 
     new DataTable('#assettable', {

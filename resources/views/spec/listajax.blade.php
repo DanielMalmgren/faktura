@@ -3,6 +3,7 @@
         <tr>
             <th>Datornamn</th>
             <th>Serienummer</th>
+            <th>Beskrivning</th>
             <th>Leasing</th>
             <th>Licens</th>
             <th>Support</th>
@@ -13,6 +14,7 @@
             <tr>
                 <td>{{$asset->asset_name}}</td>
                 <td>{{$asset->asset_serial}}</td>
+                <td>{{$asset->asset_description}}</td>
                 <td>{{$asset->leasing}} kr</td>
                 <td>{{$asset->license}} kr</td>
                 <td>{{$asset->support}} kr</td>
@@ -21,6 +23,7 @@
     </tbody>
     <tfoot>
         <tr>
+            <td></td>
             <td></td>
             <td></td>
             <th></th>
@@ -44,6 +47,10 @@
             {
                 targets: [ 1 ],
                 visible: false
+            },
+            {
+                targets: [ 2 ],
+                visible: false
             }
         ],
         footerCallback: function (row, data, start, end, display) {
@@ -59,17 +66,15 @@
                 }
             };
 
-            total = api.column(2, { search: 'applied' }).data()
-                    .reduce((a, b) => intVal(a) + intVal(b), 0);
-            api.column(2).footer().innerHTML = total + ' kr';
+            function calcFooter(c) {
+                total = api.column(c, { search: 'applied' }).data()
+                        .reduce((a, b) => intVal(a) + intVal(b), 0);
+                api.column(c).footer().innerHTML = total + ' kr';
+            }
 
-            total = api.column(3, { search: 'applied' }).data()
-                    .reduce((a, b) => intVal(a) + intVal(b), 0);
-            api.column(3).footer().innerHTML = total + ' kr';
-
-            total = api.column(4, { search: 'applied' }).data()
-                    .reduce((a, b) => intVal(a) + intVal(b), 0);
-            api.column(4).footer().innerHTML = total + ' kr';
+            calcFooter(3);
+            calcFooter(4);
+            calcFooter(5);
         }
     });
 </script>

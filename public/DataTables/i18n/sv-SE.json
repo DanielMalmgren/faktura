@@ -36,7 +36,7 @@
         },
         "copyTitle": "Kopiera till Urklipp",
         "csv": "CSV",
-        "excel": "Excel",
+        "excel": "Kalkylblad",
         "pageLength": {
             "-1": "Visa alla rader",
             "_": "Visa %d rader"
