@@ -25,7 +25,11 @@ class TOPdeskArticle extends Model
     protected static function booted(): void
     {
         static::addGlobalScope('har_objekttyp', function (Builder $builder) {
-            $builder->where('objecttype', '!=', '');
+            $builder->where('ref_soort', '!=', '');
+        });
+
+        static::addGlobalScope('har_beskrivning', function (Builder $builder) {
+            $builder->whereRaw("DATALENGTH(description) > 0");
         });
     }
 
@@ -42,6 +46,6 @@ class TOPdeskArticle extends Model
 
     public function relatedArticles(): HasMany
     {
-        return $this->hasMany(TOPdeskArticle::class, 'objecttype', 'objecttype');
+        return $this->hasMany(TOPdeskArticle::class, 'ref_soort', 'ref_soort');
     }
 }

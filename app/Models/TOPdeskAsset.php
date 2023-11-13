@@ -70,6 +70,18 @@ class TOPdeskAsset extends Model
         return $asset_value ? $asset_value->textvalue : null;
     }
 
+    public function getValtUtbyteAttribute()
+    {
+        $asset_value = $this->assetValues->where('fieldname', 'valt-utbyte')->first();
+        return $asset_value ? $asset_value->textvalue : null;
+    }
+
+    public function getOrdernummerUtbyteAttribute()
+    {
+        $asset_value = $this->assetValues->where('fieldname', 'ordernummer-utbyte')->first();
+        return $asset_value ? $asset_value->textvalue : null;
+    }
+
     public function getUtbytesdatumAttribute()
     {
         $asset_value = $this->assetValues->where('fieldname', 'utbytesdatum')->first();

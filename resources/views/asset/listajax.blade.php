@@ -40,7 +40,11 @@
                 <td>{{$asset->leasingpris}}</td>
                 <td>{{substr($asset->utbytesdatum, 0, 10)}}</td>
                 <td>
-                    @if(((new DateTime())->add(new DateInterval('P2W'))) > (new DateTime($asset->utbytesdatum)))
+                    @if($asset->valt_utbyte && $asset->valt_utbyte != '')
+                        <a href="{{env("ORDER_BASEURL")}}/Store/Order/Details/{{$asset->ordernummer_utbyte}}">
+                            {{str_replace('_', ' ', $asset->valt_utbyte)}}
+                        </a>
+                    @elseif(((new DateTime())->add(new DateInterval('P2W'))) > (new DateTime($asset->utbytesdatum)))
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#order-replacement" data-assetname="{{$asset->name}}" data-user="{{$asset->person()?$asset->person()->tasloginnaam:""}}" data-article="{{$asset->artikelnummer}}">
                             Beställ
                         </button>
