@@ -36,7 +36,7 @@
                 <td>{{$asset->name}}</td>
                 <td>{{$asset->summary}}</td>
                 <td>{{$asset->beskrivning}}</td>
-                <td>{{$asset->artikelnummer}}</td>
+                <td>{{str_replace('_', ' ', explode("+", $asset->artikelnummer)[0])}}</td>
                 <td>{{$asset->leasingpris}}</td>
                 <td>{{substr($asset->utbytesdatum, 0, 10)}}</td>
                 <td>

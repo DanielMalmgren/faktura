@@ -42,15 +42,25 @@ class AssetController extends Controller
 
     public function ordermodal(Request $request)
     {
+        $tillval_bildskarmsTyp='';
+        $tillval_bildskarmsAntal=0;
+        $tillval_4Gmodem='false';
+
         if(strpos($request->artikelnummer, "+")) {
-            $aarray = explode("+", $request->artikelnummer);
-            $artikelnummer = $aarray[0];
-            $tillval = $aarray[1];
-            $antaltillval = count($aarray)-1;
+            $allatillval = explode("+", $request->artikelnummer);
+            $artikelnummer = $allatillval[0];
+
+            //För assets enligt ny standard kan jag här istället loopa igenom alla sub-assets
+            foreach ($allatillval as $tillval) {
+                if($tillval == 'WWAN') {
+                    $tillval_4Gmodem='true';
+                } elseif(strpos(strtolower($tillval), "bildskärm") === 0) {
+                    $tillval_bildskarmsAntal++;
+                    $tillval_bildskarmsTyp=$tillval;
+                }
+            }
         } else {
             $artikelnummer = $request->artikelnummer;
-            $tillval = null;
-            $antaltillval = 0;
         }
         $articlename = 'Leasing '.$artikelnummer;
 
@@ -67,9 +77,10 @@ class AssetController extends Controller
             'kund' => $request->kund,
             'user' => $request->user,
             'oldasset' => $request->oldasset,
-            'tillval' => $tillval,
-            'antaltillval' => $antaltillval,
-        ];
+            'tillval_bildskarmsTyp' => $tillval_bildskarmsTyp,
+            'tillval_bildskarmsAntal' => $tillval_bildskarmsAntal,
+            'tillval_4Gmodem' => $tillval_4Gmodem,
+            ];
 
         return view('asset.ordermodal')->with($data);
     }
