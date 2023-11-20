@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use App\Models\TOPdeskAsset;
+use App\Models\TOPdeskAssetValue;
 use App\Models\TOPdeskCustomer;
 use App\Models\TOPdeskArticle;
 
@@ -83,5 +85,39 @@ class AssetController extends Controller
             ];
 
         return view('asset.ordermodal')->with($data);
+    }
+
+    public function orderstatusmodal(Request $request)
+    {
+        $response = Http::withoutVerifying()
+                        ->withToken(env("ZP_TOKEN"))
+                        ->acceptJson()
+                        ->get(env("ZP_BASEURL").':30000/Store/api/Order', ['orderId' => $request->orderid]);
+
+        $data = [
+            'order' => $response->object()[0],
+            'kund' => $request->kund,
+            'assetname' => $request->assetname,
+        ];
+
+        return view('asset.orderstatusmodal')->with($data);
+    }
+
+    public function cancelorder(Request $request)
+    {
+        $asset = TOPdeskAsset::where('name', $request->assetname)->first();
+
+        $ordernummerutbytevalue = $asset->assetValues->where('fieldname', 'ordernummer-utbyte')->first();
+        $ordernummerutbytevalue->textvalue = null;
+        $ordernummerutbytevalue->save();
+
+        $valtutbytevalue = $asset->assetValues->where('fieldname', 'valt-utbyte')->first();
+        $valtutbytevalue->textvalue = null;
+        $valtutbytevalue->save();
+
+        $response = Http::withoutVerifying()
+                        ->bodyFormat('query')
+                        ->withToken(env("ZP_TOKEN"))
+                        ->delete(env("ZP_BASEURL").':30000/Store/api/Order', ['orderId' => $request->orderid, 'removeParameters' => 'true']);
     }
 }

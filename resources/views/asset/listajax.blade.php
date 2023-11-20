@@ -17,6 +17,25 @@
     </div>
 </div>
 
+<div class="modal fade" id="order-status" tabindex="-1" role="dialog" aria-labelledby="module-management-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="module-management-label">Info om beställning</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Stäng">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="orderstatusmodalcontent" class="modal-body">
+                Hämtar beställningsinformation...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">@lang('Stäng')</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <table id="assettable" class="table table-bordered table-sm">
     <thead>
@@ -41,9 +60,9 @@
                 <td>{{substr($asset->utbytesdatum, 0, 10)}}</td>
                 <td>
                     @if($asset->valt_utbyte && $asset->valt_utbyte != '')
-                        <a href="{{env("ORDER_BASEURL")}}/Store/Order/Details/{{$asset->ordernummer_utbyte}}">
+                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#order-status" data-orderid="{{$asset->ordernummer_utbyte}}" data-assetname="{{$asset->name}}">
                             {{str_replace('_', ' ', $asset->valt_utbyte)}}
-                        </a>
+                        </button>
                     @elseif(((new DateTime())->add(new DateInterval('P2W'))) > (new DateTime($asset->utbytesdatum)))
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#order-replacement" data-assetname="{{$asset->name}}" data-user="{{$asset->person()?$asset->person()->tasloginnaam:""}}" data-article="{{$asset->artikelnummer}}">
                             Beställ
@@ -60,6 +79,13 @@
 </table>
 
 <script type="text/javascript">
+
+    $('#order-status').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var orderid = button.data('orderid') // Extract info from data-* attributes
+        var assetname = button.data('assetname') // Extract info from data-* attributes
+        $("#orderstatusmodalcontent").load("/asset/orderstatusmodal?kund={{$kund}}&orderid=" + orderid + "&assetname=" + assetname);
+    })
 
     $('#order-replacement').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
