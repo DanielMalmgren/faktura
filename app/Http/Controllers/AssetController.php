@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Http;
 use App\Models\TOPdeskAsset;
 use App\Models\TOPdeskAssetValue;
 use App\Models\TOPdeskCustomer;
-use App\Models\TOPdeskArticle;
 
 class AssetController extends Controller
 {
@@ -66,16 +65,16 @@ class AssetController extends Controller
         }
         $articlename = 'Leasing '.$artikelnummer;
 
-        $relatedArticles = TOPdeskArticle::where('naam', $articlename)->with('relatedArticles')->first();
-        if($relatedArticles) {
-            $articles = $relatedArticles->relatedArticles;
-        } else {
-            $articles = null;
-        }
+        $asset = TOPdeskAsset::where('name', $request->oldasset)->first();
+        $leasingservice = $asset->leasingservice();
+
+        $relatedLeasingAssetValues = TOPdeskAssetValue::select('entityid')->where('textvalue', $leasingservice->typ);
+
+        $relatedLeasingAssets = TOPdeskAsset::whereIn('unid', $relatedLeasingAssetValues)->withoutGlobalScope('status_aktiv')->orderBy('name')->get();
 
         $data = [
             'currentarticle' => $artikelnummer,
-            'articles' => $articles,
+            'replacements' => $relatedLeasingAssets,
             'kund' => $request->kund,
             'user' => $request->user,
             'oldasset' => $request->oldasset,

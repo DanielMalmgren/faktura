@@ -16,18 +16,20 @@ Orderstatus {{$order->OrderState}}<br><br>
 <script type="text/javascript">
 
     function cancelorder() {
-        $.ajax({
-            type: "DELETE",
-            url: '/asset/order',
-            data: {orderid: "{{$order->OrderId}}", assetname: "{{$assetname}}", _token: '{{csrf_token()}}'},
-            success: function (data) {
-                $('#order-status').modal('hide');
-                $("#spec").load("/asset/listajax?kund={{$kund}}");
-            },
-            error: function(data, textStatus, errorThrown) {
-                console.log(data);
-            },
-        });
+        if (confirm("Är du säker på att du vill avbryta ordern?") == true) {
+            $.ajax({
+                type: "DELETE",
+                url: '/asset/order',
+                data: {orderid: "{{$order->OrderId}}", assetname: "{{$assetname}}", _token: '{{csrf_token()}}'},
+                success: function (data) {
+                    $('#order-status').modal('hide');
+                    $("#spec").load("/asset/listajax?kund={{$kund}}");
+                },
+                error: function(data, textStatus, errorThrown) {
+                    console.log(data);
+                },
+            });
+        }
     }
 
 </script>

@@ -27,7 +27,7 @@ class TOPdeskAsset extends Model
         static::addGlobalScope('status_aktiv', function (Builder $builder) {
             $builder->join('am_value', 'am_entity.unid', '=', 'am_value.entityid')
                     ->where('am_value.fieldname', '=', 'status')
-                    ->where('am_value.textvalue', '=', 'd7ab463b-4cbb-4fd8-98d7-7e3a495c5d08');
+                    ->where('am_value.textvalue', '=', env("ZP_LEASINGSERVICECAPABILITY"));
         });
     }
 
@@ -39,6 +39,14 @@ class TOPdeskAsset extends Model
     public function person()
     {
         return $this->belongsToMany('App\Models\TOPdeskPerson', 'am_assignment', 'assetid', 'assignedentityid')->first();
+    }
+
+    public function leasingservice()
+    {
+        return $this->belongsToMany('App\Models\TOPdeskAsset', 'am_relation', 'targetid', 'sourceid')
+                    ->wherePivot('capabilityId', '=', '0FDD0D35-B912-4A1D-9CF7-BE1623520F09')
+                    ->withoutGlobalScope('status_aktiv')
+                    ->first();
     }
 
     public function assetValues()
@@ -68,6 +76,29 @@ class TOPdeskAsset extends Model
     {
         $asset_value = $this->assetValues->where('fieldname', 'artikelnummer')->first();
         return $asset_value ? $asset_value->textvalue : null;
+    }
+
+    public function getTypAttribute()
+    {
+        $asset_value = $this->assetValues->where('fieldname', 'typ')->first();
+        return $asset_value ? $asset_value->textvalue : null;
+    }
+
+    public function getLankTillZervicepointAttribute()
+    {
+        $asset_value = $this->assetValues->where('fieldname', 'lank-till-zervicepoint')->first();
+        return $asset_value ? $asset_value->textvalue : null;
+    }
+
+    public function getShortnameAttribute()
+    {
+        $explodedname = explode(" ", $this->name);
+        return $explodedname[1];
+    }
+
+    public function getPrettyShortnameAttribute()
+    {
+        return str_replace("_", " ", $this->shortname);
     }
 
     public function getValtUtbyteAttribute()
