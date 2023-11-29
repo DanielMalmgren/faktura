@@ -8,7 +8,7 @@
 </a>
 
 <a href="/asset" class='btn btn-lg'> 
-    <img src="/images/asset.png" style="margin:20px"><h3>Lista tillgångar</h3>
+    <img src="/images/asset.png" style="margin:20px"><h3>Visa tillgångar</h3>
 </a>
 
 </div>

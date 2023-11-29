@@ -13,11 +13,18 @@ class User
     {
         $aduser = \LdapRecord\Models\ActiveDirectory\User::where('sAMAccountName', $username)->first();
 
+        $admingroup = \LdapRecord\Models\ActiveDirectory\Group::find(env('ADMIN_GROUP'));
+
         $this->username = $username;
         if(isset($aduser)) {
             $this->name = $aduser->displayName[0];
-            //$this->customers = TOPdeskCustomer::where('email', 'like', '%'.$username.'%')->get();
-            $this->customers = TOPdeskCustomer::orderBy('debiteurennummer')->get();
+            if($aduser->groups()->recursive()->exists($admingroup)) {
+                $this->customers = TOPdeskCustomer::orderBy('debiteurennummer')->get();
+            } else {
+                $this->customers = TOPdeskCustomer::where('email', 'like', '%'.$username.'%')
+                                                    ->orderBy('debiteurennummer')
+                                                    ->get();
+            }
         }
     }
 

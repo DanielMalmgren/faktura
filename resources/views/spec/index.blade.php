@@ -19,7 +19,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    Fakturaspec
+                    Fakturaspecifikation
                 </div>
 
                 <div class="card-body">

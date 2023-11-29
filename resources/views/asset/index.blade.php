@@ -16,7 +16,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    Innehavsförteckning
+                    Visa tillgångar
                 </div>
 
                 <div class="card-body">

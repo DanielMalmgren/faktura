@@ -70,7 +70,11 @@ class AssetController extends Controller
 
         $relatedLeasingAssetValues = TOPdeskAssetValue::select('entityid')->where('textvalue', $leasingservice->typ);
 
-        $relatedLeasingAssets = TOPdeskAsset::whereIn('unid', $relatedLeasingAssetValues)->withoutGlobalScope('status_aktiv')->orderBy('name')->get();
+        $relatedLeasingAssets = TOPdeskAsset::whereIn('unid', $relatedLeasingAssetValues)
+                                    ->withoutGlobalScope('status_aktiv')
+                                    ->where('name', 'like', 'Leasing%')
+                                    ->orderBy('name')
+                                    ->get();
 
         $data = [
             'currentarticle' => $artikelnummer,
