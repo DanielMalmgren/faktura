@@ -3,20 +3,13 @@
 @section('content')
 <div class="container">
 
-“Vill du vara snäll och tala om för mig vilken väg jag ska ta härifrån?”<br>
+<a href="/spec" class='btn btn-lg' style="margin-right:30px"> 
+    <img src="/images/spec.png" style="margin:20px"><h3>Fakturaspecifikation</h3>
+</a>
 
-“Det beror på vart du vill komma” svarade katten.<br>
-
-“Det spelar inte så stor roll…”, sa Alice.<br>
-
-“Då spelar det heller ingen roll vilken väg du tar”, sa katten.<br>
-
-“…så länge som jag kommer någonstans”, fortsatte Alice.<br>
-
-“Åh, det kommer du att göra”, sa katten, “bara du går tillräckligt långt”.<br><br>
-
-<i>Alice i Underlandet, Lewis Carrol</i><br>
-
+<a href="/asset" class='btn btn-lg'> 
+    <img src="/images/asset.png" style="margin:20px"><h3>Lista tillgångar</h3>
+</a>
 
 </div>
 @endsection
