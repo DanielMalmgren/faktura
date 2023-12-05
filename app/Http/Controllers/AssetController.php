@@ -123,4 +123,22 @@ class AssetController extends Controller
                         ->withToken(env("ZP_TOKEN"))
                         ->delete(env("ZP_BASEURL").':30000/Store/api/Order', ['orderId' => $request->orderid, 'removeParameters' => 'true']);
     }
+
+    public function dontreplace(Request $request)
+    {
+        $response = Http::withoutVerifying()
+                        ->contentType("application/json")
+                        ->withToken(env("ZP_TOKEN"))
+                        ->post(env("ZP_BASEURL").':30000/Store/api/Order', [
+                            'ServiceUniqueId' => env('ZP_DONTREPLACE_SERVICE'), 
+                            'Requester' => env('ZP_USER'), 
+                            'Receiver' => env('ZP_USER'), 
+                            'FieldValues' => [
+                                [
+                                    "Name" => "asset",
+                                    "Value" => $request->assetname
+                                ]
+                            ]
+                        ]);
+    }
 }

@@ -27,7 +27,7 @@ class TOPdeskAsset extends Model
         static::addGlobalScope('status_aktiv', function (Builder $builder) {
             $builder->join('am_value', 'am_entity.unid', '=', 'am_value.entityid')
                     ->where('am_value.fieldname', '=', 'status')
-                    ->where('am_value.textvalue', '=', env("ZP_LEASINGSERVICECAPABILITY"));
+                    ->where('am_value.textvalue', '=', env("TD_LEASINGSERVICECAPABILITY"));
         });
     }
 

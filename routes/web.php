@@ -26,4 +26,5 @@ Route::get('/asset',                    'AssetController@index');
 Route::get('/asset/listajax',           'AssetController@listajax');
 Route::get('/asset/ordermodal',         'AssetController@ordermodal');
 Route::get('/asset/orderstatusmodal',   'AssetController@orderstatusmodal');
+Route::post('/asset/dontreplace',       'AssetController@dontreplace');
 Route::delete('/asset/order',           'AssetController@cancelorder');

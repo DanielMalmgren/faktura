@@ -6,8 +6,29 @@
             <br><br>
         @endisset
     @endforeach
-    <a class="btn btn-secondary" target="_blank" href="{{env('ZP_DONOTREPLACE_URL')}}?kund={{$kund}}&deviceUser={{$user}}&replacingAsset={{$oldasset}}">Ersätt ej</a>
+    <button type="button" class="btn btn-secondary" onClick="dontreplace()">Ersätt ej</button>
     <br><br>
 @else
     Någonting gick fel!
 @endif
+
+<script type="text/javascript">
+
+    function dontreplace() {
+        if (confirm("Är du säker på att denna tillgång inte ska ersättas alls?") == true) {
+            $.ajax({
+                type: "POST",
+                url: '/asset/dontreplace',
+                data: {assetname: "{{$oldasset}}", _token: '{{csrf_token()}}'},
+                success: function (data) {
+                    $('#order-replacement').modal('hide');
+                    $("#spec").load("/asset/listajax?kund={{$kund}}");
+                },
+                error: function(data, textStatus, errorThrown) {
+                    console.log(data);
+                },
+            });
+        }
+    }
+
+</script>
