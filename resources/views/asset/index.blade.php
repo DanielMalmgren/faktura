@@ -21,10 +21,10 @@
 
                 <div class="card-body">
 
-                    <div class="form-row">
-                        <div class="col">
+                    <div class="form-row" style="position:relative">
+                        <div class="col" style="max-width:95% !important">
                             <label for="kund">Kund</label>
-                            <select class="custom-select w-100" id="kund" name="kund" required="" onchange="updateSpec()">
+                            <select class="custom-select" id="kund" name="kund" required="" onchange="updateSpec()">
                                 @if(!$valdkund)
                                     <option selected disabled>Välj kund</option>
                                 @endif
@@ -33,7 +33,11 @@
                                 @endforeach
                             </select>
                         </div>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onClick="updateSpec()" style="height:36px;position:absolute;bottom:0;right:0">
+                            <img src="/images/Refresh.png">
+                        </button>
                     </div>
+
 
                     <br>
 

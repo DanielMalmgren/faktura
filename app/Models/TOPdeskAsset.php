@@ -119,5 +119,11 @@ class TOPdeskAsset extends Model
         return $asset_value ? $asset_value->textvalue : null;
     }
 
+    public function getLeasingmanaderAttribute()
+    {
+        $asset_value = $this->leasingservice()->assetValues->where('fieldname', 'leasingmanader')->first();
+        return $asset_value ? $asset_value->textvalue : null;
+    }
+
     protected $appends = ['leasingpris', 'beskrivning', 'artikelnummer'];
 }
