@@ -121,7 +121,7 @@ class TOPdeskAsset extends Model
 
     public function getLeasingmanaderAttribute()
     {
-        $asset_value = $this->leasingservice()->assetValues->where('fieldname', 'leasingmanader')->first();
+        $asset_value = $this->leasingservice()?->assetValues->where('fieldname', 'leasingmanader')->first();
         return $asset_value ? $asset_value->textvalue : null;
     }
 
