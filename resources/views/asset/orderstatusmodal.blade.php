@@ -6,12 +6,20 @@ Orderstatus {{$order->OrderState}}<br><br>
 @foreach($order->Parameters as $parameter)
     @if($parameter->Value || $parameter->Text)
         {{$parameter->Name.': '.$parameter->Value.($parameter->Text?' ('.$parameter->Text.')':'')}}<br>
+        @if($parameter->Name == 'orderSlappt')
+            @php
+                $orderSlappt = true;
+            @endphp
+        @endif
     @endif
+
 @endforeach
 
 <br>
 
-<button type="button" class="btn btn-secondary" onClick="cancelorder()">Annulera beställning</button>
+@empty($orderSlappt)
+    <button type="button" class="btn btn-secondary" onClick="cancelorder()">Annulera beställning</button>
+@endempty
 
 <script type="text/javascript">
 
