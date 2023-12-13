@@ -126,6 +126,8 @@ class AssetController extends Controller
 
     public function dontreplace(Request $request)
     {
+        $kund = TOPdeskCustomer::where('unid', $request->kund)->first();
+        $user = session()->get('user');
         $response = Http::withoutVerifying()
                         ->contentType("application/json")
                         ->withToken(env("ZP_TOKEN"))
@@ -135,8 +137,27 @@ class AssetController extends Controller
                             'Receiver' => env('ZP_USER'), 
                             'FieldValues' => [
                                 [
-                                    "Name" => "asset",
+                                    "Name" => "enhetSomInteSkaErsattas",
                                     "Value" => $request->assetname
+                                ],
+                                [
+                                    "Name" => "utbyte",
+                                    "Value" => "true"
+                                ],
+                                [
+                                    "Name" => "kundnummerDisplayName",
+                                    "Value" => $kund->naam
+                                ],
+                                [
+                                    "Name" => "bestallningsansvarig",
+                                    "Value" => $user->username
+                                ],
+                                [
+                                    "Name" => "kundnummer",
+                                    "Value" => json_encode([
+                                        "id" => $request->kund,
+                                        "text" => $kund->naam
+                                    ])
                                 ]
                             ]
                         ]);

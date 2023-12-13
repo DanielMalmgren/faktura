@@ -19,7 +19,7 @@
             $.ajax({
                 type: "POST",
                 url: '/asset/dontreplace',
-                data: {assetname: "{{$oldasset}}", _token: '{{csrf_token()}}'},
+                data: {assetname: "{{$oldasset}}", kund: "{{$kund}}", _token: '{{csrf_token()}}'},
                 success: function (data) {
                     $('#order-replacement').modal('hide');
                     $("#spec").load("/asset/listajax?kund={{$kund}}");
