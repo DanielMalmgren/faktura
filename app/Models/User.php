@@ -19,7 +19,9 @@ class User
         if(isset($aduser)) {
             $this->name = $aduser->displayName[0];
             if($aduser->groups()->recursive()->exists($admingroup)) {
-                $this->customers = TOPdeskCustomer::orderBy('debiteurennummer')->get();
+                $this->customers = TOPdeskCustomer::where('surface_area_m2', '>', 0)
+                                                    ->orderBy('debiteurennummer')
+                                                    ->get();
             } else {
                 $this->customers = TOPdeskCustomer::where('email', 'like', '%'.$username.'%')
                                                     ->orderBy('debiteurennummer')
