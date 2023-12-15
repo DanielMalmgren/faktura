@@ -110,5 +110,9 @@
         buttons: [
             'copy', 'excel', 'colvis', 'pageLength'
         ],
+        lengthMenu: [
+            [10, 25, 50, 100,  -1],
+            [10, 25, 50, 100, 'Alla']
+        ],
     });
 </script>
