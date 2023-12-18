@@ -28,6 +28,11 @@
                                 @if(!$valdkund)
                                     <option selected disabled>Välj kund</option>
                                 @endif
+                                @isset($kommuner)
+                                    @foreach($kommuner as $kommunid => $kommun)
+                                        <option value="{{$kommunid}}">{{$kommun}}</option>
+                                    @endforeach
+                                @endisset
                                 @foreach($kunder as $kund)
                                     <option {{$valdkund==$kund->debiteurennummer?'selected':''}} value="{{$kund->unid}}">{{$kund->naam}}</option>
                                 @endforeach

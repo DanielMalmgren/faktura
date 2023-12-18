@@ -6,6 +6,7 @@ class User
 {
     public $name;
     public $username;
+    public $see_all;
 
     public $customers;
 
@@ -19,10 +20,12 @@ class User
         if(isset($aduser)) {
             $this->name = $aduser->displayName[0];
             if($aduser->groups()->recursive()->exists($admingroup)) {
+                $this->see_all = true;
                 $this->customers = TOPdeskCustomer::where('surface_area_m2', '>', 0)
                                                     ->orderBy('debiteurennummer')
                                                     ->get();
             } else {
+                $this->see_all = false;
                 $this->customers = TOPdeskCustomer::where('email', 'like', '%'.$username.'%')
                                                     ->orderBy('debiteurennummer')
                                                     ->get();
