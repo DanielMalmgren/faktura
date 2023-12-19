@@ -131,6 +131,17 @@ class AssetController extends Controller
                         ->delete(env("ZP_BASEURL").':30000/Store/api/Order', ['orderId' => $request->orderid, 'removeParameters' => 'true']);
     }
 
+    public function subassets(Request $request)
+    {
+        $asset = TOPdeskAsset::where('name', $request->name)->first();
+
+        $data = [
+            'subassets' => $asset->subassets,
+        ];
+
+        return view('asset.subassets')->with($data);
+    }
+
     public function dontreplace(Request $request)
     {
         $kund = TOPdeskCustomer::where('unid', $request->kund)->first();

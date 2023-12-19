@@ -49,6 +49,12 @@ class TOPdeskAsset extends Model
                     ->first();
     }
 
+    public function subassets()
+    {
+        return $this->belongsToMany('App\Models\TOPdeskAsset', 'am_relation', 'targetid', 'sourceid')
+                    ->wherePivot('capabilityId', '=', '58f7683a-de2c-4ee6-be2d-484e8fa4cdaa');
+    }
+
     public function assetValues()
     {
         return $this->hasMany(TOPdeskAssetValue::class, 'entityid');
@@ -62,8 +68,12 @@ class TOPdeskAsset extends Model
 
     public function getLeasingprisAttribute()
     {
-        $asset_value = $this->assetValues->where('fieldname', 'leasingpris')->first();
-        return $asset_value ? $asset_value->numvalue : null;
+        $asset_value = $this->assetValues->where('fieldname', 'leasingpris')->first()?->numvalue;
+        $subassets = $this->subassets;
+        foreach($subassets as $subasset) {
+            $asset_value += $subasset->leasingpris;
+        }
+        return $asset_value;
     }
 
     public function getBeskrivningAttribute()

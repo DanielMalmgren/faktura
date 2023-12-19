@@ -5,8 +5,21 @@
 <script type="text/javascript">
 
     function updateSpec() {
-        var kund = $('#kund').val();
-        $("#spec").load("/asset/listajax?kund=" + kund);
+        $("#spec").html("Läser in...");
+
+        $.ajax({
+            url: '/asset/listajax',
+            data: {
+                kund: $('#kund').val()
+            },
+            dataType: 'html',
+            error: function(result) {
+                $("#spec").html("Någonting gick fel!");
+            },
+            success: function(result) {
+                $("#spec").html(result);
+            }
+        });
     }
 </script>
 

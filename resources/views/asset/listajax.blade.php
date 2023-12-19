@@ -40,6 +40,7 @@
 <table id="assettable" class="table table-bordered table-sm">
     <thead>
         <tr>
+            <th></th>
             <th>Datornamn</th>
             <th>Sammanfattning</th>
             <th>Beskrivning</th>
@@ -52,6 +53,7 @@
     <tbody>
         @foreach($assets as $asset)
             <tr>
+                <td class="{{$asset->subassets->count()>0?'dt-control':''}}"></td>
                 <td>{{$asset->name}}</td>
                 <td>{{$asset->summary}}</td>
                 <td>{{$asset->beskrivning}}</td>
@@ -101,7 +103,7 @@
         $("#ordermodalcontent").load("/asset/ordermodal?kund={{$kund}}&artikelnummer=" + artikelnummer + "&user=" + user + "&oldasset=" + assetname);
     })
 
-    new DataTable('#assettable', {
+    var table = new DataTable('#assettable', {
         language: {
             url: '/DataTables/i18n/sv-SE.json',
         },
@@ -110,9 +112,55 @@
         buttons: [
             'copy', 'excel', 'colvis', 'pageLength'
         ],
+        columnDefs: [
+            {
+                targets: [ 0 ],
+                orderable: false
+            },
+            {
+                targets: [ 1 ],
+                data: 'name'
+            },
+        ],
         lengthMenu: [
             [10, 25, 50, 100,  -1],
             [10, 25, 50, 100, 'Alla']
         ],
+    });
+
+    function format(rowData) {
+        var div = $('<div>Läser in...</div>');
+        //var div = $('<td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td>');
+    
+        $.ajax({
+            url: '/asset/subassets',
+            data: {
+                name: rowData.name
+            },
+            dataType: 'html',
+            success: function(result) {
+                //div.parent().parent().after(result);
+                div.html(result);
+            }
+        });
+
+        //console.log($('<tr>').append(div));
+        //console.log($('<tr>').append(div)[0]);
+        //console.log(div);
+    
+        //return $('<tr>').append(div)[0];
+
+        return div;
+    }
+
+    table.on('click', 'td.dt-control', function (e) {
+        let tr = e.target.closest('tr');
+        let row = table.row(tr);
+    
+        if (row.child.isShown()) {
+            row.child.hide();
+        } else {
+            row.child(format(row.data())).show();
+        }
     });
 </script>
