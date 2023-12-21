@@ -110,12 +110,17 @@
         stateSave: true,
         dom: 'Bfrtip',
         buttons: [
-            'copy', 'excel', 'colvis', 'pageLength'
+            'copy', 'excel', 'colvis', 'pageLength',
+            {
+                extend: 'colvis',
+                columns: ':not(.noVis)'
+            }
         ],
         columnDefs: [
             {
                 targets: [ 0 ],
-                orderable: false
+                orderable: false,
+                className: 'noVis'
             },
             {
                 targets: [ 1 ],
@@ -128,28 +133,35 @@
         ],
     });
 
-    function format(rowData) {
+    function format(row) {
         var div = $('<div>Läser in...</div>');
-        //var div = $('<td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td>');
-    
+
         $.ajax({
             url: '/asset/subassets',
             data: {
-                name: rowData.name
+                name: row.data().name
             },
-            dataType: 'html',
+            dataType: 'json',
             success: function(result) {
-                //div.parent().parent().after(result);
-                div.html(result);
+                var rows = [];
+                result.forEach(parseresult);
+                function parseresult(item) {
+
+                    var tds = '';
+                    if(table.column(0).visible()) { tds += '<td style="border: 0px"></td>'};
+                    if(table.column(1).visible()) { tds += '<td>'+item.name+'</td>'};
+                    if(table.column(2).visible()) { tds += '<td>'+item.summary+'</td>'};
+                    if(table.column(3).visible()) { tds += '<td>'+item.beskrivning+'</td>'};
+                    if(table.column(4).visible()) { tds += '<td>'+item.artikelnummer+'</td>'};
+                    if(table.column(5).visible()) { tds += '<td>'+item.leasingpris+'</td>'};
+
+                    var subrow = $('<tr>').append(tds)[0]
+                    rows.push(subrow);
+                }
+                row.child(rows);
             }
         });
-
-        //console.log($('<tr>').append(div));
-        //console.log($('<tr>').append(div)[0]);
-        //console.log(div);
     
-        //return $('<tr>').append(div)[0];
-
         return div;
     }
 
@@ -160,7 +172,12 @@
         if (row.child.isShown()) {
             row.child.hide();
         } else {
-            row.child(format(row.data())).show();
+            row.child(format(row)).show();
         }
+    });
+
+    table.on( 'column-visibility.dt', function ( e, settings, column, state ) {
+        //console.log('Column '+ column +' has changed to '+ (state ? 'visible' : 'hidden'));
+        {{-- TODO: Trigger redraw of child rows here --}}
     });
 </script>

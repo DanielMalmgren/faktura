@@ -135,11 +135,7 @@ class AssetController extends Controller
     {
         $asset = TOPdeskAsset::where('name', $request->name)->first();
 
-        $data = [
-            'subassets' => $asset->subassets,
-        ];
-
-        return view('asset.subassets')->with($data);
+        return $asset->subassets;
     }
 
     public function dontreplace(Request $request)
