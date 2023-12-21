@@ -47,7 +47,9 @@
             <th>Artikel</th>
             <th>Leasingpris</th>
             <th>Utbytesdatum</th>
-            <th>Utbyte</th>
+            @if($order_access)
+                <th>Utbyte</th>
+            @endif
         </tr>
     </thead>
     <tbody>
@@ -60,23 +62,25 @@
                 <td>{{str_replace('_', ' ', explode("+", $asset->artikelnummer)[0])}}</td>
                 <td>{{$asset->leasingpris}}</td>
                 <td>{{substr($asset->utbytesdatum, 0, 10)}}</td>
-                <td>
-                    @if($asset->valt_utbyte && $asset->valt_utbyte != '')
-                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#order-status" data-orderid="{{$asset->ordernummer_utbyte}}" data-assetname="{{$asset->name}}">
-                            {{str_replace('_', ' ', $asset->valt_utbyte)}}
-                        </button>
-                    @elseif(isset($asset->leasingmanader))
-                        @if(((new DateTime())->add(new DateInterval('P2W'))) > (new DateTime($asset->utbytesdatum)))
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#order-replacement" data-assetname="{{$asset->name}}" data-user="{{$asset->person()?$asset->person()->tasloginnaam:""}}" data-article="{{$asset->artikelnummer}}">
-                                Välj
+                @if($order_access)
+                    <td>
+                        @if($asset->valt_utbyte && $asset->valt_utbyte != '')
+                            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#order-status" data-orderid="{{$asset->ordernummer_utbyte}}" data-assetname="{{$asset->name}}">
+                                {{str_replace('_', ' ', $asset->valt_utbyte)}}
                             </button>
-                        @elseif(((new DateTime())->add(new DateInterval('P3M'))) > (new DateTime($asset->utbytesdatum)))
-                            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#order-replacement" data-assetname="{{$asset->name}}" data-user="{{$asset->person()?$asset->person()->tasloginnaam:""}}" data-article="{{$asset->artikelnummer}}">
-                                Välj
-                            </button>
+                        @elseif(isset($asset->leasingmanader))
+                            @if(((new DateTime())->add(new DateInterval('P2W'))) > (new DateTime($asset->utbytesdatum)))
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#order-replacement" data-assetname="{{$asset->name}}" data-user="{{$asset->person()?$asset->person()->tasloginnaam:""}}" data-article="{{$asset->artikelnummer}}">
+                                    Välj
+                                </button>
+                            @elseif(((new DateTime())->add(new DateInterval('P3M'))) > (new DateTime($asset->utbytesdatum)))
+                                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#order-replacement" data-assetname="{{$asset->name}}" data-user="{{$asset->person()?$asset->person()->tasloginnaam:""}}" data-article="{{$asset->artikelnummer}}">
+                                    Välj
+                                </button>
+                            @endif
                         @endif
-                    @endif
-                </td>
+                    </td>
+                @endif
             </tr>
         @endforeach
     </tbody>

@@ -6,9 +6,10 @@ class User
 {
     public $name;
     public $username;
-    public $see_all;
+    public $see_all; //Om kunden har behörighet att se samtliga kunder
 
-    public $customers;
+    public $customers; //Kunder som användaren har rätt att beställa för
+    public $customers_r; //Kunder som användaren kan se
 
     public function __construct(String $username)
     {
@@ -29,6 +30,26 @@ class User
                 $this->customers = TOPdeskCustomer::where('email', 'like', '%'.$username.'%')
                                                     ->orderBy('debiteurennummer')
                                                     ->get();
+                
+                $kommuner = json_decode(env('MUNICIPALITIES'));
+                foreach($kommuner as $kommun) {
+                    logger(print_r($kommun, true));
+                    if(isset($kommun->group) && strpos($kommun->group, "=") !== false) {
+                        $group = \LdapRecord\Models\ActiveDirectory\Group::find($kommun->group);
+                        if($aduser->groups()->recursive()->exists($group)) {
+                            logger("MEMBER!!!");
+                            $this->customers_r = TOPdeskCustomer::where('debiteurennummer', 'like', $kommun->code.'%')
+                                                                ->orderBy('debiteurennummer')
+                                                                ->get();
+                        }
+                    }
+                }
+            }
+
+            if($this->customers_r) {
+                $this->customers_r = $this->customers->merge($this->customers_r);
+            } else {
+                $this->customers_r = $this->customers;
             }
         }
     }

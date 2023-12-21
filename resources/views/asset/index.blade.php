@@ -42,8 +42,8 @@
                                     <option selected disabled>Välj kund</option>
                                 @endif
                                 @isset($kommuner)
-                                    @foreach($kommuner as $kommunid => $kommun)
-                                        <option value="{{$kommunid}}">{{$kommun}}</option>
+                                    @foreach($kommuner as $kommun)
+                                        <option value="{{$kommun->code}}">{{$kommun->name}}</option>
                                     @endforeach
                                 @endisset
                                 @foreach($kunder as $kund)

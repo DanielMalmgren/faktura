@@ -29,7 +29,7 @@ class SpecController extends Controller
         }
 
         $data = [
-            'kunder' => $user->customers,
+            'kunder' => $user->customers_r,
             'perioder' => $perioder,
             'valdkund' => $request->kund,
             'valdperiod' => $request->period,

@@ -20,9 +20,9 @@ class AssetController extends Controller
         $user = session()->get('user');
 
         $data = [
-            'kunder' => $user->customers,
+            'kunder' => $user->customers_r,
             'valdkund' => $request->kund,
-            'kommuner' => $user->see_all?(array)json_decode(env('MUNICIPALITIES')):null,
+            'kommuner' => $user->see_all?json_decode(env('MUNICIPALITIES')):null,
         ];
 
         return view('asset.index')->with($data);
@@ -30,19 +30,24 @@ class AssetController extends Controller
 
     public function listajax(Request $request)
     {
+        $user = session()->get('user');
+
         if (strlen($request->kund) == 4) {
             $kunder = TOPdeskCustomer::where('debiteurennummer', 'like', $request->kund.'%')->with('assets')->get();
             $assets = $kunder->flatMap(function ($kund) {
                 return $kund->assets;
             });
+            $order_access = true;
         } else {
             $kund = TOPdeskCustomer::where('unid', $request->kund)->first();
             $assets = $kund->assets;
+            $order_access = $user->customers->contains($kund);
         }
 
         $data = [
             'assets' => $assets,
             'kund' => $request->kund,
+            'order_access' => $order_access,
         ];
 
         return view('asset.listajax')->with($data);
