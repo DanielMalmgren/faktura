@@ -20,7 +20,7 @@ class SpecController extends Controller
 
         $perioder = array();
         
-        $startdatum = new DateTime('2023-12-01'); //TODO! Ändra till rätt månad sedan!
+        $startdatum = new DateTime('2024-01-01');
         $slutdatum = new DateTime(date('Y-m-01'));
 
         while ($startdatum <= $slutdatum) {

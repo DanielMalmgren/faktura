@@ -33,11 +33,9 @@ class User
                 
                 $kommuner = json_decode(env('MUNICIPALITIES'));
                 foreach($kommuner as $kommun) {
-                    logger(print_r($kommun, true));
                     if(isset($kommun->group) && strpos($kommun->group, "=") !== false) {
                         $group = \LdapRecord\Models\ActiveDirectory\Group::find($kommun->group);
                         if($aduser->groups()->recursive()->exists($group)) {
-                            logger("MEMBER!!!");
                             $this->customers_r = TOPdeskCustomer::where('debiteurennummer', 'like', $kommun->code.'%')
                                                                 ->orderBy('debiteurennummer')
                                                                 ->get();
