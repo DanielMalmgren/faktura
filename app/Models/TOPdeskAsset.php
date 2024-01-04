@@ -94,9 +94,9 @@ class TOPdeskAsset extends Model
         return $asset_value ? $asset_value->textvalue : null;
     }
 
-    public function getLankTillZervicepointAttribute()
+    public function getZervicepointTjansteIdAttribute()
     {
-        $asset_value = $this->assetValues->where('fieldname', 'lank-till-zervicepoint')->first();
+        $asset_value = $this->assetValues->where('fieldname', 'zervicepoint-tjanste-id')->first();
         return $asset_value ? $asset_value->textvalue : null;
     }
 
