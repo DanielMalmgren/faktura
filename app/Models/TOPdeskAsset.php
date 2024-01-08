@@ -55,6 +55,11 @@ class TOPdeskAsset extends Model
                     ->wherePivot('capabilityId', '=', '58f7683a-de2c-4ee6-be2d-484e8fa4cdaa');
     }
 
+    public function customer()
+    {
+        return $this->belongsToMany('App\Models\TOPdeskCustomer', 'am_assignment', 'assetid', 'assignedentityid')->first();
+    }
+
     public function assetValues()
     {
         return $this->hasMany(TOPdeskAssetValue::class, 'entityid');
@@ -135,5 +140,23 @@ class TOPdeskAsset extends Model
         return $asset_value ? $asset_value->textvalue : null;
     }
 
-    protected $appends = ['leasingpris', 'beskrivning', 'artikelnummer'];
+    public function getSenastInloggadAttribute()
+    {
+        $asset_value = $this->assetValues->where('fieldname', 'senast-inloggad')->first()?->textvalue;
+        return TOPdeskPerson::find($asset_value)?->ref_dynanaam;
+    }
+
+    public function getSenastScannadAttribute()
+    {
+        $asset_value = $this->assetValues->where('fieldname', 'senast-scannad')->first();
+        return $asset_value ? $asset_value->textvalue : null;
+    }
+
+    public function getAnteckningarAttribute()
+    {
+        $asset_value = $this->assetValues->where('fieldname', 'anteckningar')->first();
+        return $asset_value ? $asset_value->textvalue : null;
+    }
+
+    protected $appends = ['leasingpris', 'beskrivning', 'artikelnummer', 'anteckningar', 'utbytesdatum'];
 }

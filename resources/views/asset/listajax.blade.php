@@ -44,7 +44,12 @@
             <th>Datornamn</th>
             <th>Sammanfattning</th>
             <th>Beskrivning</th>
+            <th>Anteckningar</th>
+            <th>Kundnr</th>
             <th>Artikel</th>
+            <th>Fullst. artikel</th>
+            <th>Senast inloggad</th>
+            <th>Senast scannad</th>
             <th>Leasingpris</th>
             <th>Utbytesdatum</th>
             @if($order_access)
@@ -59,7 +64,12 @@
                 <td>{{$asset->name}}</td>
                 <td>{{$asset->summary}}</td>
                 <td>{{$asset->beskrivning}}</td>
+                <td>{{$asset->anteckningar}}</td>
+                <td>{{$asset->customer()->debiteurennummer}}</td>
                 <td>{{str_replace('_', ' ', explode("+", $asset->artikelnummer)[0])}}</td>
+                <td>{{$asset->artikelnummer}}</td>
+                <td>{{$asset->senast_inloggad}}</td>
+                <td>{{substr($asset->senast_scannad, 0, 10)}}</td>
                 <td>{{$asset->leasingpris}}</td>
                 <td>{{substr($asset->utbytesdatum, 0, 10)}}</td>
                 @if($order_access)
@@ -130,6 +140,30 @@
                 targets: [ 1 ],
                 data: 'name'
             },
+            {
+                targets: [ 2 ],
+                visible: false
+            },
+            {
+                targets: [ 3 ],
+                visible: false
+            },
+            {
+                targets: [ 4 ],
+                visible: false
+            },
+            {
+                targets: [ 6 ],
+                visible: false
+            },
+            {
+                targets: [ 7 ],
+                visible: false
+            },
+            {
+                targets: [ 8 ],
+                visible: false
+            },
         ],
         lengthMenu: [
             [10, 25, 50, 100,  -1],
@@ -156,8 +190,14 @@
                     if(table.column(1).visible()) { tds += '<td>'+item.name+'</td>'};
                     if(table.column(2).visible()) { tds += '<td>'+item.summary+'</td>'};
                     if(table.column(3).visible()) { tds += '<td>'+item.beskrivning+'</td>'};
-                    if(table.column(4).visible()) { tds += '<td>'+item.artikelnummer+'</td>'};
-                    if(table.column(5).visible()) { tds += '<td>'+item.leasingpris+'</td>'};
+                    if(table.column(4).visible()) { tds += '<td>'+(item.anteckningar==null?"":item.anteckningar)+'</td>'};
+                    if(table.column(5).visible()) { tds += '<td></td>'};
+                    if(table.column(6).visible()) { tds += '<td>'+item.artikelnummer+'</td>'};
+                    if(table.column(7).visible()) { tds += '<td>'+item.artikelnummer+'</td>'};
+                    if(table.column(8).visible()) { tds += '<td></td>'};
+                    if(table.column(9).visible()) { tds += '<td></td>'};
+                    if(table.column(10).visible()) { tds += '<td>'+item.leasingpris+'</td>'};
+                    if(table.column(11).visible()) { tds += '<td>'+(item.utbytesdatum==null?"":item.utbytesdatum.substring(0, 10))+'</td>'};
 
                     var subrow = $('<tr>').append(tds)[0]
                     rows.push(subrow);
