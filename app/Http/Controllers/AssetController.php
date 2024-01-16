@@ -120,6 +120,7 @@ class AssetController extends Controller
 
     public function cancelorder(Request $request)
     {
+        $user = session()->get('user');
         $asset = TOPdeskAsset::where('name', $request->assetname)->first();
 
         $ordernummerutbytevalue = $asset->assetValues->where('fieldname', 'ordernummer-utbyte')->first();
@@ -131,9 +132,11 @@ class AssetController extends Controller
         $valtutbytevalue->save();
 
         $response = Http::withoutVerifying()
-                        ->bodyFormat('query')
+                        ->contentType("application/json")
                         ->withToken(env("ZP_TOKEN"))
-                        ->delete(env("ZP_BASEURL").':30000/Store/api/Order', ['orderId' => $request->orderid, 'removeParameters' => 'true']);
+                        ->put(env("ZP_BASEURL").':30000/Store/api/Order', ['orderId' => $request->orderid, 'Action' => 'Terminate']);
+
+        logger("Order ".$request->orderid." was terminated by ".$user->username);
     }
 
     public function subassets(Request $request)
@@ -145,6 +148,7 @@ class AssetController extends Controller
 
     public function dontreplace(Request $request)
     {
+        $user = session()->get('user');
         $kund = TOPdeskCustomer::where('unid', $request->kund)->first();
         $user = session()->get('user');
         $response = Http::withoutVerifying()
@@ -180,5 +184,7 @@ class AssetController extends Controller
                                 ]
                             ]
                         ]);
+
+        logger($user->username." choose not to replace ".$request->assetname);
     }
 }
