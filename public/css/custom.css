@@ -27,3 +27,12 @@
     background-color: #366771;
     border-color: #366771;
 }
+
+.bredvid {
+    display: flex;
+    align-items: center; /* Centrerar elementen vertikalt */
+}
+
+.bredvid img {
+    margin-right: 10px; /* Ger lite utrymme mellan bilden och rubriken */
+}

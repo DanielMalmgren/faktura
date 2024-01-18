@@ -1,12 +1,26 @@
 @if($replacements)
     @foreach($replacements as $replacement)
         @isset($replacement->zervicepoint_tjanste_id)
-            <a class="btn btn-secondary" target="_blank" href="{{env("ZP_BASEURL")."/Store/Service/".$replacement->zervicepoint_tjanste_id}}?kund={{$kund}}&deviceUser={{$user}}&replacingAsset={{$oldasset}}&tillval_bildskarmsTyp={{iconv("utf-8","ascii//TRANSLIT",$tillval_bildskarmsTyp)}}&tillval_bildskarmsAntal={{$tillval_bildskarmsAntal}}&tillval_4Gmodem={{$tillval_4Gmodem}}">{{$replacement->pretty_shortname}}
-            {{mb_strcasecmp($currentarticle, $replacement->shortname)==0?"(nuvarande)":""}}</a>
-            <br><br>
+            <div style="border-bottom-color:rgb(222,226,230);border-bottom-style:solid;border-bottom-width:1px">
+                <br>
+                <div class="bredvid">
+                    <img src="data:{{$replacement->imageContentType}};base64,{{$replacement->imageContent}}" height="150">
+                    <H3>{{$replacement->DisplayName}}</H3><br>
+                </div>
+                {{$replacement->ShortDescription}}<br>
+                {!!$replacement->Description!!}<br>
+                <a class="btn btn-secondary btn-lg" target="_blank" href="{{env("ZP_BASEURL")."/Store/Service/".$replacement->zervicepoint_tjanste_id}}?kund={{$kund}}&deviceUser={{$user}}&replacingAsset={{$oldasset}}&tillval_bildskarmsTyp={{iconv("utf-8","ascii//TRANSLIT",$tillval_bildskarmsTyp)}}&tillval_bildskarmsAntal={{$tillval_bildskarmsAntal}}&tillval_4Gmodem={{$tillval_4Gmodem}}">{{$replacement->pretty_shortname}}</a>
+                <br><br>
+            </div>
         @endisset
     @endforeach
-    <button type="button" class="btn btn-secondary" onClick="dontreplace()">Ersätt ej</button>
+    <br>
+    <div class="bredvid">
+        <img src="/images/dontreplace.png">
+        <H3>Ersätt ej</H3>
+    </div>
+    Om {{$oldasset}} inte ska ersättas alls, gör detta val.<br><br>
+    <button type="button" class="btn btn-secondary btn-lg" onClick="dontreplace()">Ersätt ej</button>
     <br><br>
 @else
     Någonting gick fel!

@@ -88,9 +88,44 @@ class AssetController extends Controller
                                     ->orderBy('name')
                                     ->get();
 
+        $replacements = array();
+        $locale = env('LOCALE');
+        foreach($relatedLeasingAssets as $relatedLeasingAsset) {
+            if(isset($relatedLeasingAsset->zervicepoint_tjanste_id)) {
+                $zpinfo = $this->getzporderinfo($relatedLeasingAsset->zervicepoint_tjanste_id);
+                $replacement = new \stdClass();
+                $replacement->DisplayName = $zpinfo->DisplayName->$locale;
+                $replacement->ShortDescription = $zpinfo->ShortDescription->$locale;
+                $replacement->Description = $zpinfo->Description->$locale;
+                $replacement->zervicepoint_tjanste_id = $relatedLeasingAsset->zervicepoint_tjanste_id;
+                $replacement->shortname = $relatedLeasingAsset->shortname;
+                $replacement->pretty_shortname = $relatedLeasingAsset->pretty_shortname;
+                foreach($zpinfo->ServiceImages as $image) {
+                    if($image->UniqueId == $zpinfo->ImageUniqueId) {
+                        $replacement->imageContent = $image->Content;
+                        $replacement->imageContentType = $image->ContentType;
+                        break;
+                    }
+                }
+                if(mb_strcasecmp($artikelnummer, $replacement->shortname)==0) {
+                    $replacement->DisplayName .= " (samma som innan)";
+                    $replacement->pretty_shortname = "Byt ut mot en ny ".$replacement->pretty_shortname;
+                    array_unshift($replacements, $replacement);
+                } elseif(mb_stripos($replacement->DisplayName, "Individuellt") !== false) {
+                    $replacement->pretty_shortname = "Ersätt med ".$replacement->pretty_shortname;
+                    $lastchoice = $replacement;
+                } else {
+                    $replacement->pretty_shortname = "Ersätt med ".$replacement->pretty_shortname;
+                    $replacements[] = $replacement;
+                }
+            }
+        }
+        if($lastchoice) {
+            $replacements[] = $lastchoice;
+        }
+
         $data = [
-            'currentarticle' => $artikelnummer,
-            'replacements' => $relatedLeasingAssets,
+            'replacements' => $replacements,
             'kund' => $request->kund,
             'user' => $request->user,
             'oldasset' => $request->oldasset,
@@ -100,6 +135,15 @@ class AssetController extends Controller
             ];
 
         return view('asset.ordermodal')->with($data);
+    }
+
+    private function getzporderinfo(String $uniqueId) {
+        $response = Http::withoutVerifying()
+                        ->withToken(env("ZP_TOKEN"))
+                        ->acceptJson()
+                        ->get(env("ZP_BASEURL").':30000/Store/api/Service', ['uniqueId' => $uniqueId]);
+
+        return json_decode($response);
     }
 
     public function orderstatusmodal(Request $request)
