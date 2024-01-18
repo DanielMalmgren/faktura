@@ -153,10 +153,13 @@ class AssetController extends Controller
                         ->acceptJson()
                         ->get(env("ZP_BASEURL").':30000/Store/api/Order', ['orderId' => $request->orderid]);
 
+        $hiddenparameters = ['Quantity', 'kundnummerDisplayName', 'produkt', 'utbyte', 'bildskarmstypDisplayname', 'extraBildskarmDisplayname', 'modemDisplayName'];
+        
         $data = [
             'order' => $response->object()[0],
             'kund' => $request->kund,
             'assetname' => $request->assetname,
+            'hiddenparameters' => $hiddenparameters,
         ];
 
         return view('asset.orderstatusmodal')->with($data);

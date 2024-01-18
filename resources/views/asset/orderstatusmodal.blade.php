@@ -1,11 +1,11 @@
 
 Order-id: {{$order->OrderId}}<br>
-Orderdatum: {{$order->OrderDate}}<br>
-Orderstatus {{$order->OrderState}}<br><br>
+Orderdatum: {{substr($order->OrderDate, 0, 10)}}<br>
+Orderstatus: {{$order->Status}}<br><br>
 
 @foreach($order->Parameters as $parameter)
-    @if($parameter->Value || $parameter->Text)
-        {{$parameter->Name.': '.$parameter->Value.($parameter->Text?' ('.$parameter->Text.')':'')}}<br>
+    @if(($parameter->Value || $parameter->Text) && !in_array($parameter->Name, $hiddenparameters))
+        {{$parameter->Name.': '.($parameter->Text?$parameter->Text:$parameter->Value)}}<br>
         @if($parameter->Name == 'orderSlappt')
             @php
                 $orderSlappt = true;
