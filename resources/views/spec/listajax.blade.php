@@ -53,7 +53,16 @@
         stateSave: true,
         dom: 'Bfrtip',
         buttons: [
-            'copy', 'excel', 'colvis', 'pageLength'
+            'copy',
+            { 
+                extend: "excel",
+                filename: "{{$exportfilename}}",
+                exportOptions: {
+                    orthogonal: "export"
+                }
+            },
+            'colvis',
+            'pageLength'
         ],
         lengthMenu: [
             [10, 25, 50, 100,  -1],
@@ -61,29 +70,18 @@
         ],
         columnDefs: [
             {
-                targets: [ 1 ],
+                targets: [ 1, 2, 3, 4, 5, 6 ],
                 visible: false
             },
             {
-                targets: [ 2 ],
-                visible: false
+                targets: [ 7, 8, 9 ],
+                render: function(data, type, row) {
+                    if (type === 'export') {
+                        return data.replace(/[^\d.-]/g, ''); // Tar bort valutasymbolen för dessa kolumner vid export
+                    }
+                    return data; // För alla andra operationer, inklusive visning, returneras datan oförändrad
+                }
             },
-            {
-                targets: [ 3 ],
-                visible: false
-            },
-            {
-                targets: [ 4 ],
-                visible: false
-            },
-            {
-                targets: [ 5 ],
-                visible: false
-            },
-            {
-                targets: [ 6 ],
-                visible: false
-            }
         ],
         footerCallback: function (row, data, start, end, display) {
             let api = this.api();

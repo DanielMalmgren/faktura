@@ -47,6 +47,7 @@ class SpecController extends Controller
 
         $data = [
             'assets' => $assets,
+            'exportfilename' => "Fakturaspec Itsam ".$request->kund." ".$request->period,
         ];
 
         return view('spec.listajax')->with($data);
