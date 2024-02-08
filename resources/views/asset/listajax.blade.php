@@ -40,7 +40,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
-                Lägger order, vänligen vänta 
+                Lägger order, vänligen vänta<br><br>
                 <div class="spinner-border" role="status">
                     <span class="sr-only">Laddar...</span>
                 </div>

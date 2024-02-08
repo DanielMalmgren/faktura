@@ -47,6 +47,8 @@
                     setTimeout(function() {
                         $("#spec").load("/asset/listajax?kund={{$kund}}");
                         setTimeout(function() {
+                            $('.modal-backdrop').remove(); // Ta bort alla modal-backdrops
+                            $('body').removeClass('modal-open'); // Återställ body till normalt 
                             $('#spinnerModal').modal('hide');
                         }, 1000);
                     }, 13000);
