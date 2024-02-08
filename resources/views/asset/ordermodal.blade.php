@@ -30,13 +30,26 @@
 
     function dontreplace() {
         if (confirm("Är du säker på att denna tillgång inte ska ersättas alls?") == true) {
+
+            $('#order-replacement').modal('hide');
+
+            $('#spinnerModal').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
+
             $.ajax({
                 type: "POST",
                 url: '/asset/dontreplace',
                 data: {assetname: "{{$oldasset}}", kund: "{{$kund}}", _token: '{{csrf_token()}}'},
                 success: function (data) {
-                    $('#order-replacement').modal('hide');
-                    $("#spec").load("/asset/listajax?kund={{$kund}}");
+                    setTimeout(function() {
+                        $("#spec").load("/asset/listajax?kund={{$kund}}");
+                        setTimeout(function() {
+                            $('#spinnerModal').modal('hide');
+                        }, 1000);
+                    }, 13000);
                 },
                 error: function(data, textStatus, errorThrown) {
                     console.log(data);

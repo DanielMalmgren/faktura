@@ -36,6 +36,18 @@
     </div>
 </div>
 
+<div class="modal" id="spinnerModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                Lägger order, vänligen vänta 
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Laddar...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <table id="assettable" class="table table-bordered table-sm">
     <thead>
