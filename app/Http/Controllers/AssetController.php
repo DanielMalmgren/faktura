@@ -120,7 +120,7 @@ class AssetController extends Controller
                 }
             }
         }
-        if($lastchoice) {
+        if(isset($lastchoice)) {
             $replacements[] = $lastchoice;
         }
 
