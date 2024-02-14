@@ -28,6 +28,9 @@ class TOPdeskCustomer extends Model
         static::addGlobalScope('har_kundnr', function (Builder $builder) {
             $builder->where('debiteurennummer', '!=', '');
         });
+        static::addGlobalScope('aktiv', function (Builder $builder) {
+            $builder->where('status', '1');
+        });
     }
 
     public function assets(): BelongsToMany
