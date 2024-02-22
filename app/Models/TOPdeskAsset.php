@@ -26,7 +26,7 @@ class TOPdeskAsset extends Model
     {
         static::addGlobalScope('status_aktiv', function (Builder $builder) {
             $builder->join('am_value', 'am_entity.unid', '=', 'am_value.entityid')
-                    ->where('am_value.fieldname', '=', 'status')
+                    ->where('am_value.fieldid', '=', 61)
                     ->where('am_value.textvalue', '=', env("TD_LEASINGSERVICECAPABILITY"));
         });
     }
@@ -67,13 +67,13 @@ class TOPdeskAsset extends Model
 
     public function getRawStatusAttribute()
     {
-        $asset_value = $this->assetValues->where('fieldname', 'status')->first();
+        $asset_value = $this->assetValues->where('fieldid', 61)->first();
         return $asset_value ? $asset_value->textvalue : null;
     }
 
     public function getLeasingprisAttribute()
     {
-        $asset_value = $this->assetValues->where('fieldname', 'leasingpris')->first()?->numvalue;
+        $asset_value = $this->assetValues->where('fieldid', 36)->first()?->numvalue;
         $subassets = $this->subassets;
         foreach($subassets as $subasset) {
             $asset_value += $subasset->leasingpris;
@@ -83,25 +83,25 @@ class TOPdeskAsset extends Model
 
     public function getBeskrivningAttribute()
     {
-        $asset_value = $this->assetValues->where('fieldname', 'beskrivning')->first();
+        $asset_value = $this->assetValues->where('fieldid', 22)->first();
         return $asset_value ? $asset_value->textvalue : null;
     }
 
     public function getArtikelnummerAttribute()
     {
-        $asset_value = $this->assetValues->where('fieldname', 'artikelnummer')->first();
+        $asset_value = $this->assetValues->where('fieldid', 21)->first();
         return $asset_value ? $asset_value->textvalue : null;
     }
 
     public function getTypAttribute()
     {
-        $asset_value = $this->assetValues->where('fieldname', 'typ')->first();
+        $asset_value = $this->assetValues->where('fieldid', 68)->first();
         return $asset_value ? $asset_value->textvalue : null;
     }
 
     public function getZervicepointTjansteIdAttribute()
     {
-        $asset_value = $this->assetValues->where('fieldname', 'zervicepoint-tjanste-id')->first();
+        $asset_value = $this->assetValues->where('fieldid', 75)->first();
         return $asset_value ? $asset_value->textvalue : null;
     }
 
@@ -118,43 +118,43 @@ class TOPdeskAsset extends Model
 
     public function getValtUtbyteAttribute()
     {
-        $asset_value = $this->assetValues->where('fieldname', 'valt-utbyte')->first();
+        $asset_value = $this->assetValues->where('fieldid', 64)->first();
         return $asset_value ? $asset_value->textvalue : null;
     }
 
     public function getOrdernummerUtbyteAttribute()
     {
-        $asset_value = $this->assetValues->where('fieldname', 'ordernummer-utbyte')->first();
+        $asset_value = $this->assetValues->where('fieldid', 49)->first();
         return $asset_value ? $asset_value->textvalue : null;
     }
 
     public function getUtbytesdatumAttribute()
     {
-        $asset_value = $this->assetValues->where('fieldname', 'utbytesdatum')->first();
+        $asset_value = $this->assetValues->where('fieldid', 63)->first();
         return $asset_value ? $asset_value->textvalue : null;
     }
 
     public function getLeasingmanaderAttribute()
     {
-        $asset_value = $this->leasingservice()?->assetValues->where('fieldname', 'leasingmanader')->first();
+        $asset_value = $this->leasingservice()?->assetValues->where('fieldid', 72)->first();
         return $asset_value ? $asset_value->textvalue : null;
     }
 
     public function getSenastInloggadAttribute()
     {
-        $asset_value = $this->assetValues->where('fieldname', 'senast-inloggad')->first()?->textvalue;
+        $asset_value = $this->assetValues->where('fieldid', 53)->first()?->textvalue;
         return TOPdeskPerson::find($asset_value)?->ref_dynanaam;
     }
 
     public function getSenastScannadAttribute()
     {
-        $asset_value = $this->assetValues->where('fieldname', 'senast-scannad')->first();
+        $asset_value = $this->assetValues->where('fieldid', 54)->first();
         return $asset_value ? $asset_value->textvalue : null;
     }
 
     public function getAnteckningarAttribute()
     {
-        $asset_value = $this->assetValues->where('fieldname', 'anteckningar')->first();
+        $asset_value = $this->assetValues->where('fieldid', 20)->first();
         return $asset_value ? $asset_value->textvalue : null;
     }
 
