@@ -170,11 +170,11 @@ class AssetController extends Controller
         $user = session()->get('user');
         $asset = TOPdeskAsset::where('name', $request->assetname)->first();
 
-        $ordernummerutbytevalue = $asset->assetValues->where('fieldname', 'ordernummer-utbyte')->first();
+        $ordernummerutbytevalue = $asset->assetValues->where('fieldid', 49)->first();
         $ordernummerutbytevalue->textvalue = null;
         $ordernummerutbytevalue->save();
 
-        $valtutbytevalue = $asset->assetValues->where('fieldname', 'valt-utbyte')->first();
+        $valtutbytevalue = $asset->assetValues->where('fieldid', 64)->first();
         $valtutbytevalue->textvalue = null;
         $valtutbytevalue->save();
 
