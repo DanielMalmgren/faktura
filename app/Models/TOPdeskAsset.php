@@ -31,6 +31,14 @@ class TOPdeskAsset extends Model
         });
     }
 
+    public function scopeSerial(Builder $builder, string $serial): void
+    {
+        $builder->withoutGlobalScopes()
+            ->join('am_value', 'am_entity.unid', '=', 'am_value.entityid')
+            ->where('am_value.fieldid', '=', 56)
+            ->where('am_value.textvalue', '=', $serial);
+    }
+
     public function persons(): BelongsToMany
     {
         return $this->belongsToMany('App\Models\TOPdeskPerson', 'am_assignment', 'assetid', 'assignedentityid');
@@ -73,7 +81,7 @@ class TOPdeskAsset extends Model
 
     public function getLeasingprisAttribute()
     {
-        $asset_value = $this->assetValues->where('fieldid', 36)->first()?->numvalue;
+        $asset_value = $this->assetValues->where('fieldid', 33)->first()?->numvalue;
         $subassets = $this->subassets;
         foreach($subassets as $subasset) {
             $asset_value += $subasset->leasingpris;

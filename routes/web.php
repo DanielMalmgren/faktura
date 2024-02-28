@@ -29,3 +29,5 @@ Route::get('/asset/orderstatusmodal',   'AssetController@orderstatusmodal');
 Route::get('/asset/subassets',          'AssetController@subassets');
 Route::post('/asset/dontreplace',       'AssetController@dontreplace');
 Route::delete('/asset/order',           'AssetController@cancelorder');
+
+Route::get('/label/{serial}',           'LabelController@single');
