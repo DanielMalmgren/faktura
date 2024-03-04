@@ -71,39 +71,41 @@
     </thead>
     <tbody>
         @foreach($assets as $asset)
-            <tr>
-                <td class="{{$asset->subassets->count()>0?'dt-control':''}}"></td>
-                <td>{{$asset->name}}</td>
-                <td>{{$asset->summary}}</td>
-                <td>{{$asset->beskrivning}}</td>
-                <td>{{$asset->anteckningar}}</td>
-                <td>{{$asset->customer()->debiteurennummer}}</td>
-                <td>{{str_replace('_', ' ', explode("+", $asset->artikelnummer)[0])}}</td>
-                <td>{{$asset->artikelnummer}}</td>
-                <td>{{$asset->senast_inloggad}}</td>
-                <td>{{substr($asset->senast_scannad, 0, 10)}}</td>
-                <td>{{$asset->leasingpris}}</td>
-                <td>{{substr($asset->utbytesdatum, 0, 10)}}</td>
-                @if($order_access)
-                    <td>
-                        @if($asset->valt_utbyte && $asset->valt_utbyte != '')
-                            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#order-status" data-orderid="{{$asset->ordernummer_utbyte}}" data-assetname="{{$asset->name}}">
-                                {{str_replace('_', ' ', $asset->valt_utbyte)}}
-                            </button>
-                        @elseif(isset($asset->leasingmanader))
-                            @if(((new DateTime())->add(new DateInterval('P2W'))) > (new DateTime($asset->utbytesdatum)))
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#order-replacement" data-assetname="{{$asset->name}}" data-user="{{$asset->person()?$asset->person()->tasloginnaam:""}}" data-article="{{$asset->artikelnummer}}">
-                                    Välj
+            @if($asset->superassets->count() == 0)
+                <tr>
+                    <td class="{{$asset->subassets->count()>0?'dt-control':''}}"></td>
+                    <td>{{$asset->name}}</td>
+                    <td>{{$asset->summary}}</td>
+                    <td>{{$asset->beskrivning}}</td>
+                    <td>{{$asset->anteckningar}}</td>
+                    <td>{{$asset->customer()->debiteurennummer}}</td>
+                    <td>{{str_replace('_', ' ', explode("+", $asset->artikelnummer)[0])}}</td>
+                    <td>{{$asset->artikelnummer}}</td>
+                    <td>{{$asset->senast_inloggad}}</td>
+                    <td>{{substr($asset->senast_scannad, 0, 10)}}</td>
+                    <td>{{$asset->leasingpris}}</td>
+                    <td>{{substr($asset->utbytesdatum, 0, 10)}}</td>
+                    @if($order_access)
+                        <td>
+                            @if($asset->valt_utbyte && $asset->valt_utbyte != '')
+                                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#order-status" data-orderid="{{$asset->ordernummer_utbyte}}" data-assetname="{{$asset->name}}">
+                                    {{str_replace('_', ' ', $asset->valt_utbyte)}}
                                 </button>
-                            @elseif(((new DateTime())->add(new DateInterval('P3M'))) > (new DateTime($asset->utbytesdatum)))
-                                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#order-replacement" data-assetname="{{$asset->name}}" data-user="{{$asset->person()?$asset->person()->tasloginnaam:""}}" data-article="{{$asset->artikelnummer}}">
-                                    Välj
-                                </button>
+                            @elseif(isset($asset->leasingmanader))
+                                @if(((new DateTime())->add(new DateInterval('P2W'))) > (new DateTime($asset->utbytesdatum)))
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#order-replacement" data-assetname="{{$asset->name}}" data-user="{{$asset->person()?$asset->person()->tasloginnaam:""}}" data-article="{{$asset->artikelnummer}}">
+                                        Välj
+                                    </button>
+                                @elseif(((new DateTime())->add(new DateInterval('P3M'))) > (new DateTime($asset->utbytesdatum)))
+                                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#order-replacement" data-assetname="{{$asset->name}}" data-user="{{$asset->person()?$asset->person()->tasloginnaam:""}}" data-article="{{$asset->artikelnummer}}">
+                                        Välj
+                                    </button>
+                                @endif
                             @endif
-                        @endif
-                    </td>
-                @endif
-            </tr>
+                        </td>
+                    @endif
+                </tr>
+            @endif
         @endforeach
     </tbody>
 </table>

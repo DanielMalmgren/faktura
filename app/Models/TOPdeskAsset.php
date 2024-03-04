@@ -59,6 +59,12 @@ class TOPdeskAsset extends Model
 
     public function subassets()
     {
+        return $this->belongsToMany('App\Models\TOPdeskAsset', 'am_relation', 'sourceid', 'targetid')
+                    ->wherePivot('capabilityId', '=', '58f7683a-de2c-4ee6-be2d-484e8fa4cdaa');
+    }
+
+    public function superassets()
+    {
         return $this->belongsToMany('App\Models\TOPdeskAsset', 'am_relation', 'targetid', 'sourceid')
                     ->wherePivot('capabilityId', '=', '58f7683a-de2c-4ee6-be2d-484e8fa4cdaa');
     }
