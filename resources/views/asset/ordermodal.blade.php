@@ -4,12 +4,12 @@
             <div style="border-bottom-color:rgb(222,226,230);border-bottom-style:solid;border-bottom-width:1px">
                 <br>
                 <div class="bredvid">
-                    <img src="data:{{$replacement->imageContentType}};base64,{{$replacement->imageContent}}" height="150">
+                    <img src="data:{{$replacement->imageContentType}};base64,{{$replacement->imageContent}}" style="max-height:150px;max-width:200px">
                     <H3>{{$replacement->DisplayName}}</H3><br>
                 </div>
                 {{$replacement->ShortDescription}}<br>
                 {!!$replacement->Description!!}<br>
-                <a class="btn btn-secondary btn-lg" target="_blank" href="{{env("ZP_BASEURL")."/Store/Service/".$replacement->zervicepoint_tjanste_id}}?kund={{$kund}}&deviceUser={{$user}}&replacingAsset={{$oldasset}}&tillval_bildskarmsTyp={{iconv("utf-8","ascii//TRANSLIT",$tillval_bildskarmsTyp)}}&tillval_bildskarmsAntal={{$tillval_bildskarmsAntal}}&tillval_4Gmodem={{$tillval_4Gmodem}}">{{$replacement->pretty_shortname}}</a>
+                <a class="btn btn-secondary btn-lg" target="_blank" href="{{env("ZP_BASEURL")."/Store/Service/".$replacement->zervicepoint_tjanste_id}}?kund={{$kund}}&deviceUser={{$user}}&replacingAsset={{$oldasset->name}}&tillval_bildskarmsTyp={{iconv("utf-8","ascii//TRANSLIT",$tillval_bildskarmsTyp)}}&tillval_bildskarmsAntal={{$tillval_bildskarmsAntal}}&tillval_4Gmodem={{$tillval_4Gmodem}}&utbytesdatum={{substr($oldasset->utbytesdatum, 0, 10)}}&anteckningar={{urlencode(nl2br($oldasset->anteckningar))}}">{{$replacement->pretty_shortname}}</a>
                 <br><br>
             </div>
         @endisset
@@ -19,7 +19,7 @@
         <img src="/images/dontreplace.png">
         <H3>Ersätt ej</H3>
     </div>
-    Om {{$oldasset}} inte ska ersättas alls, gör detta val.<br><br>
+    Om {{$oldasset->name}} inte ska ersättas alls, gör detta val.<br><br>
     <button type="button" class="btn btn-secondary btn-lg" onClick="dontreplace()">Ersätt ej</button>
     <br><br>
 @else
@@ -42,7 +42,7 @@
             $.ajax({
                 type: "POST",
                 url: '/asset/dontreplace',
-                data: {assetname: "{{$oldasset}}", kund: "{{$kund}}", _token: '{{csrf_token()}}'},
+                data: {assetname: "{{$oldasset->name}}", kund: "{{$kund}}", _token: '{{csrf_token()}}'},
                 success: function (data) {
                     setTimeout(function() {
                         $("#spec").load("/asset/listajax?kund={{$kund}}");

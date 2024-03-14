@@ -8,15 +8,12 @@ use App\Models\TOPdeskAsset;
 use App\Models\TOPdeskAssetValue;
 use App\Models\TOPdeskCustomer;
 
-class AssetController extends Controller
-{
-    public function __construct()
-    {
+class AssetController extends Controller {
+    public function __construct() {
         $this->middleware('authnodb');
     }
 
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $user = session()->get('user');
 
         $data = [
@@ -28,8 +25,7 @@ class AssetController extends Controller
         return view('asset.index')->with($data);
     }
 
-    public function listajax(Request $request)
-    {
+    public function listajax(Request $request) {
         $user = session()->get('user');
 
         if (strlen($request->kund) == 4) {
@@ -53,8 +49,7 @@ class AssetController extends Controller
         return view('asset.listajax')->with($data);
     }
 
-    public function ordermodal(Request $request)
-    {
+    public function ordermodal(Request $request) {
         $tillval_bildskarmsTyp='';
         $tillval_bildskarmsAntal=0;
         $tillval_4Gmodem='false';
@@ -80,7 +75,7 @@ class AssetController extends Controller
         $asset = TOPdeskAsset::where('name', $request->oldasset)->first();
         $leasingservice = $asset->leasingservice();
 
-        $relatedLeasingAssetValues = TOPdeskAssetValue::select('entityid')->where('textvalue', $leasingservice->typ);
+        $relatedLeasingAssetValues = TOPdeskAssetValue::select('entityid')->where('textvalue', 'like', '%'.$leasingservice->tillgangliga_typer.'%');
 
         $relatedLeasingAssets = TOPdeskAsset::whereIn('unid', $relatedLeasingAssetValues)
                                     ->withoutGlobalScope('status_aktiv')
@@ -128,7 +123,7 @@ class AssetController extends Controller
             'replacements' => $replacements,
             'kund' => $request->kund,
             'user' => $request->user,
-            'oldasset' => $request->oldasset,
+            'oldasset' => $asset,
             'tillval_bildskarmsTyp' => $tillval_bildskarmsTyp,
             'tillval_bildskarmsAntal' => $tillval_bildskarmsAntal,
             'tillval_4Gmodem' => $tillval_4Gmodem,
@@ -146,8 +141,7 @@ class AssetController extends Controller
         return json_decode($response);
     }
 
-    public function orderstatusmodal(Request $request)
-    {
+    public function orderstatusmodal(Request $request) {
         $response = Http::withoutVerifying()
                         ->withToken(env("ZP_TOKEN"))
                         ->acceptJson()
@@ -165,8 +159,7 @@ class AssetController extends Controller
         return view('asset.orderstatusmodal')->with($data);
     }
 
-    public function cancelorder(Request $request)
-    {
+    public function cancelorder(Request $request) {
         $user = session()->get('user');
         $asset = TOPdeskAsset::where('name', $request->assetname)->first();
 
@@ -186,15 +179,13 @@ class AssetController extends Controller
         logger("Order ".$request->orderid." was terminated by ".$user->username);
     }
 
-    public function subassets(Request $request)
-    {
+    public function subassets(Request $request) {
         $asset = TOPdeskAsset::where('name', $request->name)->first();
 
         return $asset->subassets;
     }
 
-    public function dontreplace(Request $request)
-    {
+    public function dontreplace(Request $request) {
         $user = session()->get('user');
         $kund = TOPdeskCustomer::where('unid', $request->kund)->first();
         $user = session()->get('user');
