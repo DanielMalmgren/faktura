@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
-class TOPdeskCustomer extends Model
-{
+class TOPdeskCustomer extends Model {
     use HasFactory;
     use HasUuids;
     
@@ -23,8 +22,7 @@ class TOPdeskCustomer extends Model
 
     protected $table = 'vestiging';
 
-    protected static function booted(): void
-    {
+    protected static function booted(): void {
         static::addGlobalScope('har_kundnr', function (Builder $builder) {
             $builder->where('debiteurennummer', '!=', '');
         });
@@ -33,8 +31,7 @@ class TOPdeskCustomer extends Model
         });
     }
 
-    public function assets(): BelongsToMany
-    {
+    public function assets(): BelongsToMany {
         return $this->belongsToMany('App\Models\TOPdeskAsset', 'am_assignment', 'assignedentityid', 'assetid');
     }
 }

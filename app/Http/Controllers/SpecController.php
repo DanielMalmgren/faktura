@@ -7,15 +7,12 @@ use App\Models\InvoicedAsset;
 use App\Models\TOPdeskCustomer;
 use DateTime;
 
-class SpecController extends Controller
-{
-    public function __construct()
-    {
+class SpecController extends Controller {
+    public function __construct() {
         $this->middleware('authnodb');
     }
 
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $user = session()->get('user');
 
         $perioder = array();
@@ -38,8 +35,7 @@ class SpecController extends Controller
         return view('spec.index')->with($data);
     }
 
-    public function listajax(Request $request)
-    {
+    public function listajax(Request $request) {
         $year = 2000 + substr($request->period, 0, 2);
         $month = substr($request->period, 2, 2);
 

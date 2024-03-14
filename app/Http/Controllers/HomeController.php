@@ -7,15 +7,13 @@ use App\Models\User;
 use App\Models\HomeCareOrder;
 use App\Models\OrderAO;
 
-class HomeController extends Controller
-{
+class HomeController extends Controller {
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('authnodb');
     }
 
@@ -24,8 +22,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $user = session()->get('user');
 
         $data = [
@@ -35,8 +32,7 @@ class HomeController extends Controller
         return view('home')->with($data);
     }
 
-    public function logout()
-    {
+    public function logout() {
         session()->flush();
         return view('logout');
     }

@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TOPdeskAssetValue extends Model
-{
+class TOPdeskAssetValue extends Model {
     use HasFactory;
 
     protected $connection = 'topdesk';

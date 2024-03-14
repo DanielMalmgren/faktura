@@ -6,15 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\TOPdeskAsset;
 use App\Models\TOPdeskAssetValue;
 
-class LabelController extends Controller
-{
-    public function __construct()
-    {
+class LabelController extends Controller {
+    public function __construct() {
         $this->middleware('authnodb');
     }
 
-    public function single(Request $request)
-    {
+    public function single(Request $request) {
         $asset = TOPdeskAsset::serial($request->serial)->first();
 
         if(isset($asset)) {

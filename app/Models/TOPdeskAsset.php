@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
-class TOPdeskAsset extends Model
-{
+class TOPdeskAsset extends Model {
     use HasFactory;
 
     protected $primaryKey = 'unid';

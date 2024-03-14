@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Builder;
 
-class TOPdeskArticle extends Model
-{
+class TOPdeskArticle extends Model {
     use HasFactory;
     use HasUuids;
     
@@ -22,8 +21,7 @@ class TOPdeskArticle extends Model
 
     protected $table = 'hardware';
 
-    protected static function booted(): void
-    {
+    protected static function booted(): void {
         static::addGlobalScope('har_objekttyp', function (Builder $builder) {
             $builder->where('ref_soort', '!=', '');
         });
@@ -33,19 +31,16 @@ class TOPdeskArticle extends Model
         });
     }
 
-    public function getShortnameAttribute()
-    {
+    public function getShortnameAttribute() {
         $explodedname = explode(" ", $this->naam);
         return $explodedname[1];
     }
 
-    public function getPrettyShortnameAttribute()
-    {
+    public function getPrettyShortnameAttribute() {
         return str_replace("_", " ", $this->shortname);
     }
 
-    public function relatedArticles(): HasMany
-    {
+    public function relatedArticles(): HasMany {
         return $this->hasMany(TOPdeskArticle::class, 'ref_soort', 'ref_soort');
     }
 }
