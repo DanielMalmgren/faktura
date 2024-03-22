@@ -51,9 +51,9 @@ class TOPdeskAsset extends Model {
 
     public function subassets() {
         return $this->belongsToMany('App\Models\TOPdeskAsset', 'am_relation', 'sourceid', 'targetid')
-                    ->wherePivot('capabilityId', '=', '58f7683a-de2c-4ee6-be2d-484e8fa4cdaa');
+        ->withoutGlobalScopes();
     }
-
+    
     public function superassets() {
         return $this->belongsToMany('App\Models\TOPdeskAsset', 'am_relation', 'targetid', 'sourceid')
                     ->wherePivot('capabilityId', '=', '58f7683a-de2c-4ee6-be2d-484e8fa4cdaa');
@@ -78,7 +78,7 @@ class TOPdeskAsset extends Model {
         foreach($subassets as $subasset) {
             $asset_value += $subasset->leasingpris;
         }
-        return $asset_value;
+        return $asset_value ? $asset_value : '';
     }
 
     public function getBeskrivningAttribute() {
