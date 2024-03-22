@@ -56,6 +56,7 @@
             <th>Datornamn</th>
             <th>Sammanfattning</th>
             <th>Beskrivning</th>
+            <th>Användare</th>
             <th>Anteckningar</th>
             <th>Kundnr</th>
             <th>Artikel</th>
@@ -77,6 +78,7 @@
                     <td>{{$asset->name}}</td>
                     <td>{{$asset->summary}}</td>
                     <td>{{$asset->beskrivning}}</td>
+                    <td>{{$asset->person()?$asset->person()->ref_dynanaam:""}}</td>
                     <td>{{$asset->anteckningar}}</td>
                     <td>{{$asset->customer()->debiteurennummer}}</td>
                     <td>{{str_replace('_', ' ', explode("+", $asset->artikelnummer)[0])}}</td>
@@ -178,6 +180,10 @@
                 targets: [ 8 ],
                 visible: false
             },
+            {
+                targets: [ 9 ],
+                visible: false
+            },
         ],
         lengthMenu: [
             [10, 25, 50, 100,  -1],
@@ -204,14 +210,15 @@
                     if(table.column(1).visible()) { tds += '<td>'+item.name+'</td>'};
                     if(table.column(2).visible()) { tds += '<td>'+item.summary+'</td>'};
                     if(table.column(3).visible()) { tds += '<td>'+item.beskrivning+'</td>'};
-                    if(table.column(4).visible()) { tds += '<td>'+(item.anteckningar==null?"":item.anteckningar)+'</td>'};
-                    if(table.column(5).visible()) { tds += '<td></td>'};
-                    if(table.column(6).visible()) { tds += '<td>'+item.artikelnummer+'</td>'};
+                    if(table.column(4).visible()) { tds += '<td></td>'};
+                    if(table.column(5).visible()) { tds += '<td>'+(item.anteckningar==null?"":item.anteckningar)+'</td>'};
+                    if(table.column(6).visible()) { tds += '<td></td>'};
                     if(table.column(7).visible()) { tds += '<td>'+item.artikelnummer+'</td>'};
-                    if(table.column(8).visible()) { tds += '<td></td>'};
+                    if(table.column(8).visible()) { tds += '<td>'+item.artikelnummer+'</td>'};
                     if(table.column(9).visible()) { tds += '<td></td>'};
-                    if(table.column(10).visible()) { tds += '<td>'+item.leasingpris+'</td>'};
-                    if(table.column(11).visible()) { tds += '<td>'+(item.utbytesdatum==null?"":item.utbytesdatum.substring(0, 10))+'</td>'};
+                    if(table.column(10).visible()) { tds += '<td></td>'};
+                    if(table.column(11).visible()) { tds += '<td>'+item.leasingpris+'</td>'};
+                    if(table.column(12).visible()) { tds += '<td>'+(item.utbytesdatum==null?"":item.utbytesdatum.substring(0, 10))+'</td>'};
 
                     var subrow = $('<tr>').append(tds)[0]
                     rows.push(subrow);

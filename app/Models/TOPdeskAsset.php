@@ -76,7 +76,10 @@ class TOPdeskAsset extends Model {
         $asset_value = $this->assetValues->where('fieldid', 33)->first()?->numvalue;
         $subassets = $this->subassets;
         foreach($subassets as $subasset) {
-            $asset_value += $subasset->leasingpris;
+            $leasingpris = $subasset->leasingpris;
+            if (is_float($leasingpris)) {
+                $asset_value += $leasingpris;
+            }
         }
         return $asset_value ? $asset_value : '';
     }
