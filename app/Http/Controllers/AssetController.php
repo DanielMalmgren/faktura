@@ -190,6 +190,18 @@ class AssetController extends Controller {
 
     public function dontreplace(Request $request) {
         $user = session()->get('user');
+
+        //Kolla om användaren har en profil i Zervicepoint, använd den i så fall
+        $response = Http::withoutVerifying()
+                        ->withToken(env("ZP_TOKEN"))
+                        ->get(env("ZP_BASEURL").':30000/Store/api/Profile', ['email' => $user->email]);
+        if($response->getStatusCode() == 200) {
+            $requesterId = $response->object()->ProfileId;
+        } else {
+            $requesterId = env('ZP_USER');
+        }
+
+        $user = session()->get('user');
         $kund = TOPdeskCustomer::where('unid', $request->kund)->first();
         $user = session()->get('user');
         $response = Http::withoutVerifying()
@@ -197,8 +209,8 @@ class AssetController extends Controller {
                         ->withToken(env("ZP_TOKEN"))
                         ->post(env("ZP_BASEURL").':30000/Store/api/Order', [
                             'ServiceUniqueId' => env('ZP_DONTREPLACE_SERVICE'), 
-                            'Requester' => env('ZP_USER'), 
-                            'Receiver' => env('ZP_USER'), 
+                            'Requester' => $requesterId, 
+                            'Receiver' => $requesterId, 
                             'FieldValues' => [
                                 [
                                     "Name" => "enhetSomInteSkaErsattas",

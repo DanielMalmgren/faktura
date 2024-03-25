@@ -6,6 +6,7 @@ class User
 {
     public $name;
     public $username;
+    public $email;
     public $see_all; //Om kunden har behörighet att se samtliga kunder
 
     public $customers; //Kunder som användaren har rätt att beställa för
@@ -20,6 +21,7 @@ class User
         $this->username = $username;
         if(isset($aduser)) {
             $this->name = $aduser->displayName[0];
+            $this->email = $aduser->extensionAttribute14[0];
             if($aduser->groups()->recursive()->exists($admingroup)) {
                 $this->see_all = true;
                 $this->customers = TOPdeskCustomer::where('surface_area_m2', '>', 0)
