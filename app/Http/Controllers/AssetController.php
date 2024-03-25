@@ -31,15 +31,13 @@ class AssetController extends Controller {
         if (strlen($request->kund) == 4) {
             $kunder = TOPdeskCustomer::where('debiteurennummer', 'like', $request->kund.'%')->with('assets')->get();
             $assets = $kunder->flatMap(function ($kund) {
-                return $kund->assets;
+                return $kund->assetviews;
             });
             $order_access = true;
-            $light = true; //Light mode on
         } else {
             $kund = TOPdeskCustomer::where('unid', $request->kund)->first();
-            $assets = $kund->assets;
+            $assets = $kund->assetviews;
             $order_access = $user->customers->contains($kund);
-            $light = false; //Light mode off
         }
 
         $data = [
@@ -48,11 +46,7 @@ class AssetController extends Controller {
             'order_access' => $order_access,
         ];
 
-        if($light) {
-            return view('asset.listajax_light')->with($data);
-        } else {
-            return view('asset.listajax')->with($data);
-        }
+        return view('asset.listajax')->with($data);
     }
 
     public function ordermodal(Request $request) {

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -33,5 +34,9 @@ class TOPdeskCustomer extends Model {
 
     public function assets(): BelongsToMany {
         return $this->belongsToMany('App\Models\TOPdeskAsset', 'am_assignment', 'assignedentityid', 'assetid');
+    }
+
+    public function assetviews(): HasMany {
+        return $this->hasMany('App\Models\TOPdeskAssetView', 'kundnummer', 'debiteurennummer');
     }
 }
