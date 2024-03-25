@@ -28,12 +28,15 @@ class AssetController extends Controller {
     public function listajax(Request $request) {
         $user = session()->get('user');
 
+        if($user->see_all) {
+            $order_access = true;
+        }
+
         if (strlen($request->kund) == 4) {
             $kunder = TOPdeskCustomer::where('debiteurennummer', 'like', $request->kund.'%')->with('assets')->get();
             $assets = $kunder->flatMap(function ($kund) {
                 return $kund->assetviews;
             });
-            $order_access = true;
         } else {
             $kund = TOPdeskCustomer::where('unid', $request->kund)->first();
             $assets = $kund->assetviews;
