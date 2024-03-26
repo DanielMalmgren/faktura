@@ -136,7 +136,7 @@
         stateSave: true,
         dom: 'Bfrtip',
         buttons: [
-            'copy', 'excel', 'colvis', 'pageLength',
+            'copy', 'excel', 'pageLength',
             {
                 extend: 'colvis',
                 columns: ':not(.noVis)'
