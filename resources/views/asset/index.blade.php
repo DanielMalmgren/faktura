@@ -47,7 +47,7 @@
                                     @endforeach
                                 @endisset
                                 @foreach($kunder as $kund)
-                                    <option {{$valdkund==$kund->debiteurennummer?'selected':''}} value="{{$kund->unid}}">{{$kund->naam}}</option>
+                                    <option {{$valdkund==$kund->debiteurennummer?'selected':''}} value="{{$kund->debiteurennummer}}">{{$kund->naam}}</option>
                                 @endforeach
                             </select>
                         </div>

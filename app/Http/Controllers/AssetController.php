@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\TOPdeskAsset;
+use App\Models\TOPdeskAssetView;
 use App\Models\TOPdeskAssetValue;
 use App\Models\TOPdeskCustomer;
 
@@ -28,19 +29,16 @@ class AssetController extends Controller {
     public function listajax(Request $request) {
         $user = session()->get('user');
 
-        if($user->see_all) {
-            $order_access = true;
+        if (strlen($request->kund) == 4) {
+            $assets = TOPdeskAssetView::where('kundnummer', 'like', $request->kund.'%')->get();
+        } else {
+            $assets = TOPdeskAssetView::where('kundnummer', $request->kund)->get();
+            $kund = TOPdeskCustomer::where('debiteurennummer', $request->kund)->first();
+            $order_access = $user->customers->contains($kund);
         }
 
-        if (strlen($request->kund) == 4) {
-            $kunder = TOPdeskCustomer::where('debiteurennummer', 'like', $request->kund.'%')->with('assets')->get();
-            $assets = $kunder->flatMap(function ($kund) {
-                return $kund->assetviews;
-            });
-        } else {
-            $kund = TOPdeskCustomer::where('unid', $request->kund)->first();
-            $assets = $kund->assetviews;
-            $order_access = $user->customers->contains($kund);
+        if($user->see_all) {
+            $order_access = true;
         }
 
         $data = [
