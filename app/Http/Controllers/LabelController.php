@@ -7,9 +7,6 @@ use App\Models\TOPdeskAsset;
 use App\Models\TOPdeskAssetValue;
 
 class LabelController extends Controller {
-    public function __construct() {
-        $this->middleware('authnodb');
-    }
 
     public function single(Request $request) {
         $asset = TOPdeskAsset::serial($request->serial)->first();
@@ -27,5 +24,9 @@ class LabelController extends Controller {
         ];
 
         return view('label.single')->with($data);
+    }
+
+    public function index() {
+        return view('label.index');
     }
 }
