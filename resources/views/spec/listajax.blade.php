@@ -51,19 +51,22 @@
             url: '/DataTables/i18n/sv-SE.json',
         },
         stateSave: true,
-        dom: 'Bfrtip',
-        buttons: [
-            'copy',
-            { 
-                extend: "excel",
-                filename: "{{$exportfilename}}",
-                exportOptions: {
-                    orthogonal: "export"
-                }
-            },
-            'colvis',
-            'pageLength'
-        ],
+        layout: {
+            topStart: {
+                buttons: [
+                    'copy',
+                    { 
+                        extend: "excel",
+                        filename: "{{$exportfilename}}",
+                        exportOptions: {
+                            orthogonal: "export"
+                        }
+                    },
+                    'colvis',
+                    'pageLength'
+                ]
+            }
+        },
         lengthMenu: [
             [10, 25, 50, 100,  -1],
             [10, 25, 50, 100, 'Alla']

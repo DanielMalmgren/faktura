@@ -134,14 +134,17 @@
             url: '/DataTables/i18n/sv-SE.json',
         },
         stateSave: true,
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'excel', 'pageLength',
-            {
-                extend: 'colvis',
-                columns: ':not(.noVis)'
+        layout: {
+            topStart: {
+                buttons: [
+                'copy', 'excel', 'pageLength',
+                {
+                    extend: 'colvis',
+                    columns: ':not(.noVis)'
+                }
+            ]
             }
-        ],
+        },
         columnDefs: [
             {
                 targets: [ 0 ],
