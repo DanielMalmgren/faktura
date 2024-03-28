@@ -200,7 +200,7 @@ class AssetController extends Controller {
         }
 
         $user = session()->get('user');
-        $kund = TOPdeskCustomer::where('unid', $request->kund)->first();
+        $kund = TOPdeskCustomer::where('debiteurennummer', $request->kund)->first();
         $user = session()->get('user');
         $response = Http::withoutVerifying()
                         ->contentType("application/json")
